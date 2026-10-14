@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1 in 88 Billion</title>
+<meta name="description" content="Be born as a farmed animal and live the whole life, built on published welfare research.">
+<style>
+:root{
+  --bg:#f6f3ec;--fg:#23221f;--muted:#625f57;--card:#fffdf8;--line:#d9d2c0;--accent:#8a3b2a;--accent-fg:#fff;
+  --H:#4f8a4a;--C:#b9801f;--B:#3f7399;--O:#8d5a9c;--bar:#e6dfce;--warn:#8a3b2a;--ic:#8a6a4a;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#181714;--fg:#efebe0;--muted:#aaa699;--card:#22211d;--line:#3a3830;--accent:#e08a72;--accent-fg:#1a1411;--bar:#34322b;
+  --H:#86b87f;--C:#dcab55;--B:#7eabce;--O:#c195ce;--warn:#e08a72}
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark;font-size:18px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Segoe UI",Helvetica,Arial,sans-serif;line-height:1.7}
+:lang(en) h1,:lang(en) h2{font-family:Georgia,"Times New Roman",serif}
+main{max-width:1020px;margin:0 auto;padding:16px 16px 90px}
+h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.08;margin:.15em 0 .2em;font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.3rem;line-height:1.35;margin:0 0 .5em;font-weight:700}
+p{margin:.55em 0}
+.muted{color:var(--muted)}
+.small{font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:860px){.grid{grid-template-columns:1.3fr 1fr}}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:10px 16px;min-height:44px}
+button:hover{border-color:var(--muted)}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700;padding:14px 30px;font-size:1.15rem}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;border-radius:0;padding:8px 14px;min-height:42px}
+.seg button.on{background:var(--accent);color:var(--accent-fg);font-weight:700}
+.counters{display:grid;grid-template-columns:1fr;gap:12px;margin:20px 0}
+@media(min-width:660px){.counters{grid-template-columns:1fr 1fr}}
+.big{font-size:2.3rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.note{border-left:4px solid var(--warn);padding:8px 14px;background:color-mix(in srgb,var(--warn) 9%,transparent);border-radius:0 8px 8px 0}
+.stat{margin:12px 0}
+.stat .lbl{display:flex;justify-content:space-between;font-size:1rem;font-weight:600}
+.bar{height:14px;background:var(--bar);border-radius:7px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;transition:width .4s;border-radius:7px}
+.log{max-height:420px;overflow:auto;padding:0;margin:0;list-style:none}
+.log li{padding:10px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:84px 1fr;gap:12px;font-size:1.02rem}
+.log .a{font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:12px;padding:0 9px;margin-left:8px;color:var(--muted);white-space:nowrap}
+.evt{font-size:1.2rem;min-height:6em;line-height:1.75}
+.hm{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:1rem}
+.hm .s{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.hm.d .s{color:var(--warn);font-weight:600}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:color-mix(in srgb,var(--ic) 14%,var(--card));border-color:color-mix(in srgb,var(--ic) 40%,var(--line))}
+.hero .pic{width:132px;height:100px;color:var(--ic)}
+@media(min-width:620px){.hero .pic{width:190px;height:140px}}
+.hero .kind{font-size:clamp(1.9rem,6vw,3rem);font-weight:800;line-height:1.1}
+.hero .sys{font-size:1.1rem}
+.age{font-size:2.1rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.strip{display:flex;height:26px;border-radius:6px;overflow:hidden;background:var(--bar);position:relative}
+.strip span{display:block;height:100%;border-right:2px solid var(--card)}
+.strip .now{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--fg)}
+.pause{border:3px solid var(--accent)}
+input[type=text]{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+details{margin:10px 0}summary{cursor:pointer;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:.95rem}td,th{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+a{color:var(--accent)}
+.hide{display:none!important}
+svg text{fill:var(--muted);font:12px sans-serif}
+.zoo{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+.zoo svg{width:78px;height:58px;color:var(--ic)}
+.bob{animation:bob 2.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.bob{animation:none}}
+</style>
+</head>
+<body>
+<main>
+
+<div class="top"><div class="muted small" data-t="beta"></div>
+  <div class="seg" id="segLang" role="group" aria-label="Language"><button data-v="en">English</button><button data-v="ja">日本語</button></div></div>
+
+<!-- HOME -->
+<section id="home">
+  <h1 data-t="title"></h1>
+  <div class="zoo" id="zoo" aria-hidden="true"></div>
+  <p style="font-size:1.15rem" data-t="intro1"></p>
+  <p style="font-size:1.15rem" data-t="intro2"></p>
+
+  <div class="counters">
+    <div class="card"><div class="big" id="cSlaughter">0</div><div class="muted" data-t="cnt1"></div></div>
+    <div class="card"><div class="big" id="cChick">0</div><div class="muted" data-t="cnt2"></div></div>
+  </div>
+
+  <div class="card">
+    <h2 data-t="howBorn"></h2>
+    <div class="row" style="margin-bottom:8px">
+      <div class="seg" id="segMode" role="group"><button data-v="real" data-t="modeReal"></button><button data-v="equal" class="on" data-t="modeEqual"></button></div>
+    </div>
+    <p class="small muted" id="modeHelp"></p>
+    <h2 style="margin-top:16px" data-t="howLong"></h2>
+    <div class="seg" id="segLen" role="group"><button data-v="3" data-t="len3"></button><button data-v="6" class="on" data-t="len6"></button><button data-v="10" data-t="len10"></button></div>
+    <p class="small muted" data-t="lenHelp"></p>
+    <div style="margin-top:18px"><button class="primary" id="btnBorn" data-t="born"></button> <button id="btnResume" class="hide" data-t="resume"></button></div>
+    <div class="note small" style="margin-top:16px" data-t="warn"></div>
+  </div>
+
+  <div class="card"><h2 data-t="tallyH"></h2><div id="tallyBody" class="small"></div></div>
+
+  <details class="card">
+    <summary data-t="realH"></summary>
+    <p class="small" data-t="real1"></p>
+    <p class="small" data-t="real2"></p>
+    <p class="small" data-t="real3"></p>
+    <p class="small"><a href="research.md" target="_blank" rel="noopener" data-t="srcLink"></a></p>
+    <div class="small" id="srcList"></div>
+  </details>
+  <p class="small muted" data-t="credit"></p>
+</section>
+
+<!-- LIFE -->
+<section id="life" class="hide">
+  <div class="card hero">
+    <div class="pic bob" id="heroPic" aria-hidden="true"></div>
+    <div>
+      <div class="kind" id="heroKind"></div>
+      <div class="sys" id="heroSys"></div>
+      <div class="muted small" id="heroSex"></div>
+      <div class="age" id="lAge" style="margin-top:6px">0</div>
+    </div>
+  </div>
+  <div class="row" style="justify-content:space-between">
+    <div class="row">
+      <button id="btnPause" data-t="pause"></button>
+      <div class="seg" id="segSpeed" role="group"><button data-v="1" class="on">1×</button><button data-v="2">2×</button><button data-v="4">4×</button><button data-v="8">8×</button><button data-v="16">16×</button></div>
+      <button id="btnNext" data-t="next"></button>
+    </div>
+    <button id="btnHome" data-t="leave"></button>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card"><div class="evt" id="evt"></div></div>
+      <div class="card pause hide" id="pauseCard">
+        <h2 id="pTitle"></h2>
+        <p id="pNature"></p>
+        <p id="pSys" class="muted"></p>
+        <p><b id="pQ"></b></p>
+        <input type="text" id="pNote" maxlength="140" data-ph="notePh" aria-label="note">
+        <div style="margin-top:12px"><button class="primary" id="btnCont" data-t="cont"></button></div>
+      </div>
+      <div class="card"><h2 data-t="record"></h2><ul class="log" id="log"></ul></div>
+    </div>
+    <div>
+      <div class="card"><h2><span data-t="stateH"></span> <span class="muted small" data-t="stateSub"></span></h2><div id="stats"></div></div>
+      <div class="card">
+        <h2 data-t="scaleH"></h2>
+        <div class="strip" id="strip"></div>
+        <div class="small muted" id="stageNow" style="margin:5px 0 12px"></div>
+        <div class="small"><span data-t="vsNat"></span> (<span id="natTxt"></span>)</div>
+        <div class="strip" style="margin-top:5px"><span id="natFill" style="background:var(--accent);width:1%;border:0"></span></div>
+        <div class="small muted" id="natPct"></div>
+      </div>
+      <div class="card"><h2 data-t="sameSec"></h2><p class="small muted" data-t="sameSecHelp"></p><div id="hm"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- END -->
+<section id="end" class="hide">
+  <div class="card hero">
+    <div class="pic" id="endPic" aria-hidden="true"></div>
+    <div><div class="muted small" id="eTitle"></div><h1 id="eHead" style="margin:.1em 0"></h1><div id="eCause" style="font-size:1.15rem"></div></div>
+  </div>
+  <div class="card"><h2 data-t="endNatH"></h2><p id="eNat" style="font-size:1.1rem"></p></div>
+  <div class="card"><h2 data-t="endStateH"></h2><div id="eSpark"></div></div>
+  <div class="card"><h2 data-t="endSurvH"></h2><div id="eSurv"></div><p class="small muted" id="eSurvTxt"></p></div>
+  <div class="card" id="eNotes"></div>
+  <div class="row"><button class="primary" id="btnAgain" data-t="again"></button><button id="btnHome2" data-t="home"></button></div>
+</section>
+
+</main>
+
+<script>
+'use strict';
+/* ================= helpers ================= */
+const rnd = Math.random;
+const rr = (a, b) => a + rnd() * (b - a);
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const gauss = (mu, s) => { let u = 0; for (let i = 0; i < 6; i++) u += rnd(); return mu + (u - 3) * 1.414 * s; };
+const pick = a => a[Math.floor(rnd() * a.length)];
+const wpick = o => { let t = 0; for (const k in o) t += o[k]; let r = rnd() * t; for (const k in o) { r -= o[k]; if (r <= 0) return k; } return Object.keys(o)[0]; };
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ================= language ================= */
+let LANG = store.get('fl.lang', null) || ((navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en');
+const m = (e, j, ...a) => ({ e, j, a });                      // a bilingual message
+const fmtArg = v => (v && typeof v === 'object') ? ('span' in v ? spanTxt(v.span) : 'age' in v ? ageTxt(v.age) : 'msg' in v ? tx(v.msg) : v) : v;
+const tx = x => { if (x == null) return ''; if (typeof x === 'string') return x; const s = (LANG === 'ja' ? x.j : x.e) || x.e; return s.replace(/\{(\d)\}/g, (_, i) => fmtArg(x.a[i])); };
+function ageTxt(d) {
+  const ja = LANG === 'ja';
+  if (d < 1) return Math.max(0, Math.floor(d * 24)) + (ja ? '時間' : ' h old');
+  if (d < 21) return ja ? Math.floor(d) + '日目' : 'Day ' + Math.floor(d);
+  if (d < 120) return Math.floor(d / 7) + (ja ? '週' : ' weeks');
+  if (d < 730) return Math.floor(d / 30.4) + (ja ? 'か月' : ' months');
+  const y = Math.floor(d / 365.25), mo = Math.floor((d - y * 365.25) / 30.4);
+  return ja ? y + '歳' + mo + 'か月' : y + ' y ' + mo + ' m';
+}
+function spanTxt(d) {
+  const ja = LANG === 'ja';
+  if (d < 1) return ja ? '1日未満' : 'under a day';
+  if (d < 21) return Math.round(d) + (ja ? '日' : ' days');
+  if (d < 120) return Math.round(d / 7) + (ja ? '週間' : ' weeks');
+  if (d < 730) return Math.round(d / 30.4) + (ja ? 'か月' : ' months');
+  return (d / 365.25).toFixed(1) + (ja ? '年' : ' years');
+}
+const UI = {
+  beta: ['Beta · a free life simulator · built from published welfare research', 'ベータ版 · 無料の人生シミュレーター · 公表された動物福祉の研究をもとにしています'],
+  title: ['1 in 88 billion', '880億分の1'],
+  intro1: ['About 88 billion land animals are slaughtered for food each year. That is roughly 2,800 every second. This page makes you one of them. You do not choose the species or the farm. Neither did they.', '毎年、およそ880億頭の陸の動物が、食べるために殺されています。1秒に約2,800頭。このページでは、あなたがそのうちの1頭として生まれます。どんな動物に、どこの農場に生まれるかは、くじ引きで決まります。'],
+  intro2: ['You make no decisions here. You watch one life from the first hour to the last, at the speed you pick.', '操作は、見る速さを変えるだけ。生まれたその瞬間から最期まで、ひとつの生涯を見届けます。'],
+  cnt1: ['land animals slaughtered since you opened this page', 'このページを開いてから、屠殺された陸の動物の数'],
+  cnt2: ['of them chickens (about 4 in 5)', 'うちニワトリ（およそ5羽に4羽）'],
+  howBorn: ['How you are born', 'どんな動物として生まれるか'],
+  modeReal: ['By real numbers', '実際の数にそって'], modeEqual: ['Equal chance per species', 'どの種も同じ確率で'],
+  modeRealHelp: ['Your species is drawn in proportion to how many of each are born into farming each year. Most likely you will be a chicken raised for meat.', '毎年、畜産の現場で生まれる数に比例して、種が決まります。いちばん多いのは、食肉用のニワトリです。'],
+  modeEqualHelp: ['Every species is equally likely. You are as likely to be a rabbit as a broiler chicken. In life, that is not the case.', 'どの種も同じ確率で選ばれます。ウサギもブロイラーも、出る確率は同じです。現実の数とは大きく違います。'],
+  howLong: ['How long the life takes to watch', '見届ける長さ'],
+  len3: ['About 3 min', '約3分'], len6: ['About 6 min', '約6分'], len10: ['About 10 min', '約10分'],
+  lenHelp: ['This is the length for a typical life of the species you draw. A day-old chick\'s life is short on any setting. You can pause and speed up at any time.', 'その種の、ふつうの一生をこの長さで再生します。生後1日で終わる命は、どの設定でも短くなります。一時停止も倍速も、いつでも使えます。'],
+  born: ['Be born', '生まれる'], resume: ['Back to my life', '続きから'],
+  warn: ['Death, disease, injury, mutilation and slaughter all appear, as the research describes them. Nothing is drawn in detail. The text is plain, and it is not gentle.', '死、病気、けが、身体の切除、屠殺。研究に書かれているとおりに、すべて出てきます。場面を細かく描くことはしませんが、文章はやさしくありません。'],
+  tallyH: ['Lives you have lived', 'これまで生きた命'], tallyNone: ['None yet. Saved only in this browser.', 'まだありません。記録はこのブラウザにだけ保存されます。'], tallyClear: ['Clear my record', '記録を消す'],
+  realH: ['What is real data and what is not', '実際のデータと、そうでないもの'],
+  real1: ['Each event comes from a published source or, where I could not find one, is marked as an estimate in the source list (link below). The odds on this page (how likely a piglet is to be crushed, how many hens have broken keel bones) come from the studies listed below. Some come from advocacy groups, and the source list says which.', '各イベントは、公表されている資料にもとづいています。資料が見つからなかったものは、下のリンク先の出典一覧に「推定」と書いてあります。子豚が圧死する割合、採卵鶏の竜骨が折れる割合などの数字は、下に挙げた研究から取りました。動物保護団体の資料も含まれていて、どれがそうかも、その一覧で区別しています。'],
+  real2: ['The four bars are a model, not a measurement. They loosely follow the Five Domains framework of animal welfare science. Health is injury and disease. Comfort is space, air, floor and temperature. Behaviour is whether the animal can do what its body is built to do. Company is contact with a mother, flock or herd. We cannot measure what an animal feels, and this app does not claim to.', '4本のバーは、測定値ではなく、あくまでモデルです。動物福祉科学の「5つの領域」という考え方を、ゆるく参考にしました。健康はけがや病気、快適さは広さ・空気・床・温度、行動は本来できることができているか、仲間は母親や群れとのつながりです。動物が実際に何を感じているかは測れませんし、このアプリもそこまでは言いません。'],
+  real3: ['Left out: farmed fish (trillions, counted differently), goats, geese, horses, and breeding animals other than sows and dairy cows. Most sheep live on open pasture, not in factory farms, and the app shows that.', '含めていないもの：養殖魚（数兆匹にのぼり、数え方も違います）、ヤギ、ガチョウ、ウマ、母豚と乳牛以外の繁殖用の動物。なお、ヒツジの大半は工場式ではなく放牧地で育ちます。このアプリでも、そのとおりに扱っています。'],
+  srcLink: ['Full source list with confidence notes (research.md, in English)', '出典と確度の一覧（research.md・英語）'],
+  credit: ['Not affiliated with 1in8b.life. The idea of living one random life is theirs. All code, text and data here are new.', '1in8b.life とは関係がありません。「ランダムに生まれて、ひとつの人生を生きる」という発想はあちらのものです。コード、文章、データは、すべて新しく作りました。'],
+  pause: ['Pause', '一時停止'], play: ['Resume', '再開'], next: ['Next »', '次へ »'], leave: ['Leave', '中断'], cont: ['Continue', '続ける'],
+  notePh: ['Leave a line, if you want. It stays in this browser.', '一行、書き残してもかまいません。このブラウザにだけ保存されます。'],
+  record: ['The record', '記録'], stateH: ['State', '状態'], stateSub: ['0–100 · a model', '0〜100・モデル'],
+  scaleH: ['This life, to scale', '生涯の長さ'], vsNat: ['Against a natural lifespan', '自然な寿命と比べると'],
+  sameSec: ['Born in the same second', '同じ1秒に生まれた命'], sameSecHelp: ['Four others, drawn the same way. Their lives run alongside yours.', 'ほかに4頭、同じやり方で選ばれました。あなたの生涯と並んで進みます。'],
+  endNatH: ['How long, against a natural life', '自然な寿命と比べて'], endStateH: ['State over this life', '状態の移り変わり'],
+  endSurvH: ['Of 400 animals born into this same system', '同じ飼育方式に生まれた400頭では'],
+  again: ['Be born again', 'もう一度生まれる'], home: ['Home', 'ホームへ'],
+  pt0: ['The beginning', 'はじまり'], pt1: ['Midway', '中ごろ'], pt2: ['Near the end', '終わりが近づく'],
+  inNature: ['In nature: ', '自然のなかでは：'], inNatureGen: ['In nature, this animal would live for {0}.', 'この動物は、自然のなかなら{0}ほど生きます。'], here: ['Here: ', 'この場所では：'],
+  q0: ['If this animal could choose one thing right now, what would it be?', 'いまこの動物が何か一つ選べるとしたら、何を選ぶでしょうか。'],
+  q1: ['What is this body being asked to do that it was not built for?', 'この体は、本来の作りとは違うどんなことを求められているでしょう。'],
+  q2: ['Who is missing from this scene?', 'この場面にいてほしいのは、誰でしょうか。'],
+  q3: ['What would you want someone to notice about this moment?', 'この瞬間について、誰かに気づいてほしいことはありますか。']
+};
+const ui = k => UI[k][LANG === 'ja' ? 1 : 0];
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.title = LANG === 'ja' ? '880億分の1' : '1 in 88 Billion';
+  document.querySelectorAll('[data-t]').forEach(el => { const u = UI[el.dataset.t]; if (u) el.textContent = u[LANG === 'ja' ? 1 : 0]; });
+  document.querySelectorAll('[data-ph]').forEach(el => { el.placeholder = UI[el.dataset.ph][LANG === 'ja' ? 1 : 0]; });
+  [...$('segLang').children].forEach(b => b.classList.toggle('on', b.dataset.v === LANG));
+  $('modeHelp').textContent = ui(A.mode === 'real' ? 'modeRealHelp' : 'modeEqualHelp');
+  $('btnPause').textContent = ui(A.paused ? 'play' : 'pause');
+  renderSources(); renderTally();
+  if (A.V === 'life') relife();
+  if (A.V === 'end') endScreen();
+}
+
+/* ================= animal pictures ================= */
+const PIC = {
+  chicken: '<svg viewBox="0 0 200 150"><g fill="currentColor"><ellipse cx="92" cy="86" rx="56" ry="40"/><circle cx="150" cy="50" r="23"/><path d="M42 70 Q10 42 24 22 Q52 38 62 62Z"/><rect x="82" y="118" width="5" height="26"/><rect x="104" y="118" width="5" height="26"/></g><path d="M170 47 L193 54 L170 61Z" fill="#d9a21b"/><path d="M137 30 q5 -16 11 -3 q6 -14 11 3Z" fill="#c43b2d"/><path d="M158 66 q8 14 -2 18 q-6 -8 2 -18Z" fill="#c43b2d"/><circle cx="157" cy="47" r="3.4" fill="#fff"/></svg>',
+  chick: '<svg viewBox="0 0 200 150"><g fill="currentColor"><circle cx="100" cy="90" r="42"/><circle cx="100" cy="42" r="26"/><rect x="88" y="124" width="4" height="20"/><rect x="108" y="124" width="4" height="20"/></g><path d="M118 40 L142 47 L118 54Z" fill="#d9a21b"/><circle cx="108" cy="38" r="3.4" fill="#fff"/></svg>',
+  pig: '<svg viewBox="0 0 200 150"><g fill="currentColor"><rect x="30" y="50" width="120" height="62" rx="30"/><circle cx="150" cy="78" r="30"/><path d="M130 52 L146 28 L158 56Z"/><rect x="48" y="104" width="12" height="30" rx="4"/><rect x="118" y="104" width="12" height="30" rx="4"/></g><rect x="160" y="76" width="30" height="24" rx="10" fill="#f0b4b0"/><circle cx="170" cy="88" r="2.5" fill="#6b3a38"/><circle cx="180" cy="88" r="2.5" fill="#6b3a38"/><circle cx="151" cy="70" r="3.2" fill="#fff"/><path d="M30 70 q-18 -4 -14 10 q8 4 8 -6" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>',
+  cow: '<svg viewBox="0 0 200 150"><g fill="currentColor"><rect x="24" y="42" width="120" height="62" rx="22"/><rect x="136" y="38" width="42" height="40" rx="14"/><rect x="40" y="98" width="12" height="40"/><rect x="62" y="98" width="12" height="40"/><rect x="110" y="98" width="12" height="40"/><rect x="130" y="98" width="12" height="40"/></g><path d="M140 40 q-4 -18 -12 -14 M172 40 q4 -18 12 -14" stroke="#e8e0cc" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="160" cy="72" rx="20" ry="11" fill="#f0c8c0"/><circle cx="150" cy="54" r="3.3" fill="#fff"/><ellipse cx="62" cy="66" rx="16" ry="11" fill="#fffdf8" opacity=".75"/><ellipse cx="102" cy="82" rx="13" ry="9" fill="#fffdf8" opacity=".75"/><ellipse cx="84" cy="106" rx="14" ry="8" fill="#f0c8c0"/></svg>',
+  calf: '<svg viewBox="0 0 200 150"><g fill="currentColor" transform="translate(30 30) scale(.72)"><rect x="24" y="42" width="120" height="62" rx="22"/><rect x="136" y="38" width="42" height="40" rx="14"/><rect x="40" y="98" width="12" height="40"/><rect x="62" y="98" width="12" height="40"/><rect x="110" y="98" width="12" height="40"/><rect x="130" y="98" width="12" height="40"/></g><circle cx="150" cy="68" r="2.8" fill="#fff"/></svg>',
+  sheep: '<svg viewBox="0 0 200 150"><g fill="#efe9db" stroke="currentColor" stroke-width="3"><circle cx="64" cy="72" r="30"/><circle cx="96" cy="58" r="32"/><circle cx="130" cy="72" r="30"/><circle cx="82" cy="92" r="28"/><circle cx="114" cy="92" r="28"/></g><g fill="currentColor"><ellipse cx="164" cy="76" rx="20" ry="25"/><rect x="62" y="108" width="9" height="32"/><rect x="82" y="112" width="9" height="28"/><rect x="108" y="112" width="9" height="28"/><rect x="128" y="108" width="9" height="32"/></g><circle cx="168" cy="68" r="3.2" fill="#fff"/></svg>',
+  duck: '<svg viewBox="0 0 200 150"><g fill="currentColor"><ellipse cx="90" cy="92" rx="62" ry="38"/><path d="M142 70 Q150 20 168 36 Q176 62 156 86Z"/><circle cx="162" cy="40" r="19"/><path d="M30 78 L6 64 L34 96Z"/></g><path d="M174 40 L196 48 L174 54Z" fill="#e08a1d"/><circle cx="165" cy="35" r="3.2" fill="#fff"/><path d="M60 94 q30 22 60 0" fill="none" stroke="#fffdf8" stroke-width="4" opacity=".6"/><rect x="82" y="124" width="5" height="18" fill="#e08a1d"/><rect x="104" y="124" width="5" height="18" fill="#e08a1d"/></svg>',
+  turkey: '<svg viewBox="0 0 200 150"><g fill="currentColor" opacity=".55"><circle cx="70" cy="62" r="52"/></g><g fill="currentColor"><ellipse cx="96" cy="92" rx="50" ry="36"/><path d="M130 82 Q146 40 160 52 Q162 76 142 98Z"/><circle cx="156" cy="46" r="15"/><rect x="82" y="120" width="5" height="24"/><rect x="104" y="120" width="5" height="24"/></g><path d="M166 44 L184 50 L166 56Z" fill="#d9a21b"/><path d="M158 58 q10 14 -2 20 q-7 -10 2 -20Z" fill="#c43b2d"/><circle cx="158" cy="42" r="2.8" fill="#fff"/></svg>',
+  rabbit: '<svg viewBox="0 0 200 150"><g fill="currentColor"><ellipse cx="88" cy="96" rx="56" ry="38"/><circle cx="144" cy="76" r="24"/><ellipse cx="140" cy="30" rx="8" ry="30" transform="rotate(-8 140 30)"/><ellipse cx="160" cy="32" rx="8" ry="30" transform="rotate(10 160 32)"/><circle cx="32" cy="92" r="12"/><rect x="62" y="122" width="14" height="20" rx="5"/><rect x="108" y="122" width="14" height="20" rx="5"/></g><circle cx="152" cy="72" r="3.2" fill="#fff"/><circle cx="164" cy="82" r="3.6" fill="#e69b9b"/></svg>'
+};
+const ICON_OF = { broiler: 'chicken', layerF: 'chicken', layerM: 'chick', pig: 'pig', dairyF: 'cow', dairyM: 'calf', beef: 'cow', sheep: 'sheep', duck: 'duck', turkey: 'turkey', rabbit: 'rabbit' };
+const COLOR_OF = { broiler: '#c9893f', layerF: '#b5653c', layerM: '#d1a53a', pig: '#d08f8f', dairyF: '#6d5a48', dairyM: '#7d6a58', beef: '#8a5b3c', sheep: '#8d8778', duck: '#cf9f2e', turkey: '#8c5a3a', rabbit: '#9a9080' };
+$('zoo').innerHTML = ['chicken', 'pig', 'cow', 'sheep', 'duck', 'turkey', 'rabbit'].map(k => `<span>${PIC[k]}</span>`).join('');
+
+/* ================= tags ================= */
+const TG = {
+  Birth: ['Birth', '誕生'], Hatchery: ['Hatchery', 'ふ化場'], Transport: ['Transport', '輸送'], Housing: ['Housing', '飼育環境'], Growth: ['Growth', '成長'],
+  Health: ['Health', '健康'], Behaviour: ['Behaviour', '行動'], Procedure: ['Procedure', '処置'], Slaughter: ['Slaughter', '屠殺'], Death: ['Death', '死'],
+  Rearing: ['Rearing', '育成'], Laying: ['Laying', '産卵'], Weaning: ['Weaning', '離乳'], Selection: ['Selection', '選抜'], Breeding: ['Breeding', '交配'],
+  Gestation: ['Gestation', '妊娠'], Farrowing: ['Farrowing', '分娩準備'], Calving: ['Calving', '出産'], Milking: ['Milking', '搾乳'], 'Dry period': ['Dry period', '乾乳期'],
+  Sale: ['Sale', '売却'], Weather: ['Weather', '天候'], Shearing: ['Shearing', '毛刈り'], 'Force-feeding': ['Force-feeding', '強制給餌']
+};
+const tg = k => TG[k] ? TG[k][LANG === 'ja' ? 1 : 0] : k;
+
+/* ================= life construction ================= */
+function die(L, planned, wins, slMsg) {
+  let end = planned, cause = slMsg, sl = true;
+  for (const w of wins) if (w[2] > 0 && rnd() < w[2]) { const d = rr(w[0], w[1]); if (d < end) { end = d; cause = w[3]; sl = false; } }
+  L.end = Math.max(end, 0.05); L.cause = cause; L.slaughtered = sl;
+}
+function E(L, d, msg, fx, tag, p) {
+  if (p != null && rnd() > p) return;
+  if (Array.isArray(d)) d = rr(d[0], d[1]);
+  if (d >= L.end - 0.0001) return;
+  L.ev.push({ d, msg, fx: fx || {}, tag: tag || '' });
+}
+function final(L, preMsg, atMsg, deathMsg) {
+  if (L.slaughtered) E(L, Math.max(0.02, L.end - 0.4), preMsg, { C: -15, B: -10 }, 'Transport');
+  L.ev.push({ d: L.end, msg: L.slaughtered ? atMsg : (deathMsg || m('The life ends here. Cause: {0}.', 'ここで生涯が終わります。原因は{0}。', { msg: L.cause })), fx: { H: -100 }, tag: L.slaughtered ? 'Slaughter' : 'Death', fin: true });
+}
+const stages = (L, arr) => { L.st = arr.filter(s => s[1] < L.end); };
+const SX = { male: m('male', 'オス'), female: m('female', 'メス') };
+const slAt = (days) => m('Slaughtered at {0}', '{0}で食肉処理されました', { span: days });
+const slAtD = (days) => m('Slaughtered at {0} days', '{0}日齢で食肉処理', Math.round(days));
+
+const SP = {};
+
+/* ---------- broiler ---------- */
+SP.broiler = { label: m('Broiler chicken', '肉用鶏（ブロイラー）'), nat: m('5–8 years', '5〜8年'), natDays: 2555,
+  nature: [m('A hen sits on her eggs for about three weeks, then keeps her chicks under her for the first weeks and teaches them what to eat.', '雌鶏は3週間ほど卵を温め、ひなが生まれたあとも数週間は羽の下に入れて、何を食べればいいか教えます。'), m('Junglefowl spend much of the day walking, scratching and foraging, and roost off the ground at night.', 'ニワトリの祖先にあたる野鶏は、昼のほとんどを歩いて地面をかき、エサを探して過ごします。夜は地面から離れた枝で眠ります。'), m('A chicken that reaches adulthood grows slowly over months. A modern broiler reaches slaughter weight in about six weeks.', '本来のニワトリは、数か月かけてゆっくり大人になります。いまのブロイラーは、およそ6週間で出荷の体重に届きます。')],
+  build(L) {
+    const s = L.o.sys || wpick({ fast: .86, slow: .09, out: .05 }); L.sys = s; L.sex = pick(['male', 'female']);
+    L.sysName = { fast: m('Fast-growing breed, indoor house', '急成長品種・屋内の鶏舎'), slow: m('Slower-growing breed, indoor with enrichment', '成長がゆっくりの品種・屋内（止まり木などあり）'), out: m('Slower-growing breed, outdoor access', '成長がゆっくりの品種・屋外に出られる') }[s];
+    const fast = s === 'fast';
+    const planned = fast ? clamp(gauss(42, 3), 34, 50) : s === 'slow' ? rr(56, 70) : rr(70, 81);
+    L.typ = fast ? 42 : s === 'slow' ? 63 : 75;
+    L.base = { H: fast ? 86 : 92, C: fast ? 62 : 75, B: fast ? 38 : s === 'slow' ? 58 : 78, O: 28 };
+    L.slope = { H: fast ? -34 : -8, C: fast ? -20 : -4, B: fast ? -8 : 0, O: 0 };
+    L.sysLine = fast ? m('One open floor, tens of thousands of birds, artificial light, a breed that gains about 100 g a day.', '仕切りのない一つの床に、数万羽。照明は人工。1日に100gほど太る品種です。') : s === 'slow' ? m('A slower-growing breed with more space, perches or bales to use, and natural light.', '成長がゆっくりの品種で、広さに余裕があり、止まり木やわらの束を使えます。自然光も入ります。') : m('A slower-growing breed with daytime access to outdoor range.', '成長がゆっくりの品種で、昼間は屋外の運動場に出られます。');
+    die(L, planned, [
+      [0, 7, fast ? .015 : .01, m('Died in the first week (failed to start eating, chilled, or a weak yolk sac)', '生後1週間のうちに死亡（食べ始められなかった、体が冷えた、卵黄をうまく吸収できなかった、など）')],
+      [7, planned, fast ? .047 : .015, fast ? m('Heart failure or ascites (fluid build-up), a known cost of very fast growth', '心不全や腹水（おなかに水がたまる病気）。急成長の代償としてよく知られている') : m('Disease on the farm', '農場での病気')],
+      [10, planned, fast ? .03 : .008, m('Sudden death syndrome', '突然死症候群')],
+      [10, planned, fast ? .02 : .005, m('Culled by the farmer because it could not walk to food or water', '餌や水まで歩けなくなり、農場の判断で殺処分された')],
+      [planned - 1, planned, .004, m('Died on the truck or in the crates', '輸送中、またはカゴの中で死亡')]
+    ], slAtD(planned));
+    E(L, 0, m('You hatch in a machine, in a room with thousands of others. No hen ever sat on your egg. You will not meet a parent.', '機械の中で、何千羽ものひなと一緒にふ化します。母鳥があなたの卵を温めたことは一度もありません。親には会えないまま育ちます。'), { O: -10 }, 'Birth');
+    E(L, .15, m('You are sorted on a belt, vaccinated, and put in a box with about a hundred others.', 'ベルトコンベアの上で選別され、ワクチンを受けて、100羽ほどと同じ箱に入れられます。'), {}, 'Hatchery');
+    E(L, .6, m('A truck takes you to the grow-out farm. Some chicks wait hours in the box without food or water before they are placed.', 'トラックで育てる農場へ。鶏舎に入るまでの何時間か、餌も水もない箱の中で待たされるひなもいます。'), { C: -6 }, 'Transport');
+    E(L, 1.2, fast ? m('The house is one long floor of wood shavings under artificial light, holding tens of thousands of birds. Heaters keep you warm. A hen would have done this.', '鶏舎は、木くずを敷いた長い一枚の床です。人工の光のもとに数万羽。体を温めるのはヒーターで、本当なら母鳥の仕事でした。') : m('The house is bright, with a floor of shavings and some things to climb on. Other birds are everywhere.', '鶏舎は明るく、木くずの床と、登れる台があります。まわりは仲間でいっぱいです。'), { C: -4 }, 'Housing');
+    E(L, 7, fast ? m('You are about four times your hatch weight. Broiler growth has gone from roughly 25 g a day to roughly 100 g a day in fifty years of breeding.', '体重はふ化したときの約4倍。ブロイラーの成長は、50年の品種改良で1日25gほどから100gほどに上がりました。') : m('You are growing steadily. You still have a long way to go.', '順調に育っています。出荷まではまだ日があります。'), { H: -3 }, 'Growth');
+    E(L, [16, 28], m('Your heart and legs are growing slower than your breast muscle. Standing takes effort now. You spend more of each day lying down.', '心臓と脚の成長が、胸の筋肉の成長に追いつきません。立っているだけで疲れて、1日の大半を座って過ごすようになります。'), { H: -12, B: -14, C: -6 }, 'Health', fast ? 1 : 0);
+    E(L, [20, 34], m('The litter under you is wet with droppings. Ammonia builds up. Your feet and hocks start to burn where they touch it. In surveys, 22% to 79% of broilers had foot-pad dermatitis.', '足もとの敷料はふんで湿り、アンモニアがたまります。触れている足の裏やかかとが、ただれ始めました。調査では、ブロイラーの22〜79％に足裏の皮膚炎がありました。'), { H: -12, C: -14 }, 'Health', fast ? .5 : .12);
+    E(L, [18, 32], m('You are one of the birds that struggle to walk. In one UK survey 27.6% of broilers had walking problems, and 3.3% could almost not walk.', '歩くのがつらい1羽になってしまいました。英国のある調査では、ブロイラーの27.6％に歩行の問題があり、3.3％はほとんど歩けない状態でした。'), { H: -18, B: -16, C: -10 }, 'Health', fast ? .28 : .03);
+    E(L, [10, 40], m('The lights stay on most of the day. Rest is broken. A chicken in nature roosts at dusk and sleeps in the dark.', '照明は一日のほとんどついたままで、眠りは細切れです。自然のニワトリは夕方に止まり木へ上がり、暗い中で眠ります。'), { C: -6, B: -6 }, 'Housing', fast ? 1 : .3);
+    if (!fast) E(L, [20, 45], m('You can reach perches and pecking material. You dust-bathe. Some days you are at the far end of the house with a small group.', '止まり木やつつける物に届きます。砂浴びもできます。数羽で鶏舎の奥まで行き、ゆっくりする日もあります。'), { B: 10, C: 6 }, 'Behaviour');
+    if (s === 'out') E(L, [30, 55], m('The door opens in the morning. You walk out onto grass for the first time.', '朝になって戸が開きました。生まれて初めて、草の上に出ます。'), { B: 20, C: 10, O: 6 }, 'Behaviour');
+    final(L,
+      m('Feed is taken away for some hours. Then you are caught, usually at night, by hand, and put into crates on a truck. The ride to the plant can take hours.', '数時間、餌を止められます。そのあと、たいていは夜のうちに手でつかまえられ、カゴに入れてトラックに積まれます。処理場までは何時間もかかることがあります。'),
+      m('At the plant you are hung upside-down by the legs on a moving line, then pulled through an electrified water bath, then your throat is cut. EFSA found that some water-bath systems may not stop pain before unconsciousness. You are about {0} days old, around 2 to 3 kg.', '処理場では、動くラインに脚をつるされて逆さになり、電気を通した水槽をくぐらされ、喉を切られます。EFSA（欧州食品安全機関）は、水槽式の一部で、意識を失うまでの痛みを防げない可能性があると指摘しています。約{0}日齢、体重は2〜3kgほどです。', Math.round(L.end)));
+    stages(L, [[m('Hatchery', 'ふ化場'), 0], [m('Grow-out house', '肥育鶏舎'), 1], [m('Catching and transport', '捕獲と輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- layer male chick ---------- */
+SP.layerM = { label: m('Egg-industry male chick', '採卵鶏の雄ひよこ'), nat: m('5–8 years', '5〜8年'), natDays: 2555,
+  nature: [m('A male junglefowl guards a group of hens, finds food for them and calls when he finds something good.', 'オスの野鶏は、雌鶏の群れを見張り、いい餌を見つけると声を上げて仲間を呼びます。'), null, null],
+  build(L) {
+    L.sys = 'hatch'; L.sex = 'male'; L.sysName = m('Hatchery of an egg-laying breed', '採卵用の品種のふ化場'); L.typ = 1;
+    L.base = { H: 95, C: 60, B: 50, O: 20 }; L.slope = {};
+    L.sysLine = m('Hatched from an egg-laying breed, you will not lay eggs and do not grow fast enough for meat. You are surplus.', '採卵用の品種に生まれたので、卵は産めず、食肉用としては育ちが遅すぎます。つまり、余りもの扱いです。');
+    die(L, 0.3, [], m('Killed at the hatchery within hours of hatching', 'ふ化から数時間以内に、ふ化場で殺された')); L.slaughtered = false;
+    E(L, 0, m('You hatch in a machine with thousands of others. No hen sat on your egg.', '機械の中で、何千羽ものひなと一緒にふ化しました。雌鶏に温めてもらったわけではありません。'), { O: -10 }, 'Birth');
+    E(L, .1, m('Workers and machines sort chicks by sex. You are a male of a laying breed. You are not worth feeding.', '作業員と機械が、ひなを性別で振り分けていきます。採卵用品種のオスは、エサ代をかける価値がないとされます。'), { C: -10 }, 'Hatchery');
+    L.ev.push({ d: L.end, msg: m('You are killed, by gas or by a high-speed grinder, in the first hours of your life. Roughly as many male chicks as laying hens are hatched. Some countries have banned the practice. Most have not.', '生まれて数時間で、ガスか高速の粉砕機で殺されます。採卵鶏とほぼ同じ数のオスのひなが、毎年ふ化しています。この慣行を禁止した国もありますが、多くの国では続いています。'), fx: { H: -100 }, tag: 'Death', fin: true });
+    stages(L, [[m('Hatchery', 'ふ化場'), 0]]);
+  } };
+
+/* ---------- layer hen ---------- */
+SP.layerF = { label: m('Laying hen', '採卵鶏'), nat: m('5–8 years', '5〜8年'), natDays: 2555,
+  nature: [m('A hen chooses a hidden, sheltered nest and lays a clutch of 10 to 15 eggs a year, then stops to brood them.', '雌鶏は人目につかない囲われた場所に巣をつくり、年に10〜15個ほど産んだら、あとは卵を温めます。'), m('Hens in a flock spend much of the day foraging, dust-bathing and perching.', '群れの雌鶏は、昼間の多くを、エサ探しと砂浴びと止まり木で過ごします。'), m('A hen at 18 months is in mid-life. Her bones were built to lay perhaps a dozen eggs a season, not 300 a year.', '18か月の雌鶏は、まだ寿命の途中です。もともと、年に300個ではなく、一度に十数個を産む程度の骨でできています。')],
+  build(L) {
+    const s = L.o.sys || wpick({ cage: .60, col: .24, barn: .12, range: .04 }); L.sys = s; L.sex = 'female';
+    L.sysName = { cage: m('Conventional cage', '従来型のケージ'), col: m('Enriched colony cage', '改良型（エンリッチド）ケージ'), barn: m('Cage-free barn or aviary', 'ケージのない平飼い・多段式鶏舎'), range: m('Free range', '放し飼い') }[s];
+    const planned = clamp(gauss(525, 25), 480, 600); L.typ = 525;
+    L.base = { H: 82, C: { cage: 42, col: 55, barn: 60, range: 68 }[s], B: { cage: 18, col: 38, barn: 58, range: 72 }[s], O: { cage: 38, col: 45, barn: 38, range: 48 }[s] };
+    L.slope = { H: -26, C: -14, B: 0, O: 0 };
+    L.sysLine = { cage: m('A wire cage shared with several hens. In the EU barren cages have been banned since 2012. They remain common in much of the world.', '数羽で使う金網のケージです。EUでは2012年に禁止されましたが、世界の多くの地域では今も一般的です。'), col: m('A larger cage with a perch, a nest area and a scratch area, at least 750 cm² per hen.', '止まり木、巣、砂浴びの場所をそなえた、やや大きめのケージ。1羽あたり750cm²以上です。'), barn: m('A shed or aviary with tiers, perches and litter, with thousands of birds loose together.', '段や止まり木、敷料のある鶏舎で、数千羽がまとめて放されています。'), range: m('A shed with daytime access outdoors.', '昼は屋外に出られる鶏舎です。') }[s];
+    die(L, planned, [
+      [0, 119, .03, m('Died while being reared as a young pullet', '若いメスとして育てられている間に死亡')],
+      [120, planned, { cage: .08, col: .09, barn: .1, range: .1 }[s], m('Died on the farm (disease, injury, cannibalism or prolapse)', '農場で死亡（病気、けが、共食い、脱出症など）')]
+    ], m('Slaughtered at about {0} weeks of age', '約{0}週齢で食肉処理', Math.round(planned / 7)));
+    E(L, 0, m('You hatch in a machine. Half of the chicks around you, the males, are killed within hours. You are a female and you are kept.', '機械の中でふ化します。まわりのひなの半分、つまりオスは、数時間のうちに殺されます。メスのあなたは、残されます。'), { O: -10 }, 'Birth');
+    E(L, [1, 10], m('The tip of your beak is trimmed with a heat beam, a common way to limit feather-pecking damage later. The beak is full of nerve endings.', 'くちばしの先が、熱線で切られます。のちの羽つつきの被害を抑えるために、よく行われる処置です。くちばしには神経が集まっています。'), { H: -8, B: -10 }, 'Procedure', .8);
+    E(L, [20, 100], m('You are reared in a pullet shed, with other young hens of your age, vaccinated several times.', '同じ年ごろの若い雌鶏たちと育成舎で育てられ、何度かワクチンを打たれます。'), {}, 'Rearing');
+    E(L, 120, { cage: m('You are moved into a laying cage. You will stay here. Each hen has a space about the size of a sheet of paper.', '採卵用のケージに移されました。これからずっと、ここで暮らします。1羽の広さは、紙1枚ぶんほどです。'), col: m('You are moved into a laying colony cage with a perch and a nest curtain, shared with several dozen hens.', '止まり木と、巣のカーテンがある改良型ケージに移ります。数十羽で共用です。'), barn: m('You are moved into the laying shed. It is crowded, but there are perches and floor to scratch.', '採卵用の鶏舎に移ります。混み合っていますが、止まり木と、かける床があります。'), range: m('You are moved into the laying house. The pop-holes open in the day.', '採卵用の鶏舎に移りました。昼のあいだは、出入り口が開きます。') }[s], { C: -10, B: s === 'cage' ? -18 : -4 }, 'Housing');
+    E(L, 135, m('You lay your first egg. A hen of your breed will lay about 300 in a year, two to three times more than a hen in nature.', '最初の卵を産みました。この品種は1年に約300個。自然な雌鶏の2〜3倍にあたります。'), { H: -6 }, 'Laying');
+    E(L, [150, 300], m('The egg shell takes calcium from your skeleton faster than you can replace it. Your bones thin, and the keel (breastbone) is at risk of breaking. Surveys report keel fractures in up to 97% of hens in non-caged systems, and around 85% in a Danish study.', '卵の殻をつくるために、骨のカルシウムが使われます。補充が追いつかず、骨は薄くなり、竜骨（胸の骨）が折れやすくなります。調査では、ケージ以外の飼育で最大97％、デンマークの研究では約85％の雌鶏に竜骨の骨折がありました。'), { H: -22, C: -8 }, 'Health', s === 'cage' ? .55 : .85);
+    E(L, [180, 400], s === 'cage' ? m('Feathers are worn off your back and neck by the wire and by neighbours. There is nowhere to get away.', '金網や隣の鶏にこすられて、背中と首の羽が抜けていきます。逃げ込める場所は、ありません。') : m('Feather-pecking breaks out in the flock. You lose feathers on your back, and you are pecked. In loose systems it can spread fast.', '群れの中で羽つつきが始まりました。背中の羽を失い、つつかれます。放し飼いの方式では、あっという間に広がることもあります。'), { H: -10, C: -10, O: -8 }, 'Health', s === 'cage' ? .5 : s === 'col' ? .45 : .6);
+    if (s === 'cage') E(L, [160, 400], m('You cannot stretch your wings. You cannot dust-bathe, perch, or hide to lay. Hens in these cages show frustration at the time before laying.', '翼を広げられません。砂浴びも、止まり木に上がることも、隠れて産むこともできません。こうしたケージの雌鶏は、産卵の前にいらいらした行動を見せることが知られています。'), { B: -14, C: -8 }, 'Behaviour');
+    if (s === 'col') E(L, [200, 400], m('You can perch, and you can sit in the nest area to lay. The space is still small.', '止まり木に上がれます。産むときは、巣の区画に入れます。それでも、やはり狭い。'), { B: 8 }, 'Behaviour');
+    if (s === 'barn') E(L, [200, 400], m('You find a dust-bathing patch in the litter. The shed is loud and dusty, and ammonia can sting.', '敷料の中に、砂浴びのできる場所を見つけました。鶏舎はうるさく、ほこりっぽく、アンモニアで目がしみることもあります。'), { B: 10, C: -6 }, 'Behaviour');
+    if (s === 'range') E(L, [200, 400], m('You walk out into the range for hours. Overhead there is a hawk shadow. You run back. Some of your flock does not come back.', '何時間も外の運動場を歩きます。空にタカの影が見えて、あわてて戻りました。戻ってこない仲間もいます。'), { B: 16, C: 6, O: 6 }, 'Behaviour');
+    final(L,
+      m('Your egg production has dropped. The flock is sold as spent hens. You are caught, crated and trucked to the plant. Broken bones are common at catching and loading, because the bones of spent hens are brittle. One advocacy report says up to half of a flock arrives with fractures.', '産卵数が落ちてきました。群れはまとめて廃鶏として売られます。つかまえられ、カゴに入れられて、処理場へ。廃鶏の骨はもろく、捕獲や積み込みで折れることがよくあります。ある動物保護団体の報告では、1つの群れの半数近くが、骨折したまま着くといいます。'),
+      m('You are hung upside-down by your legs on a shackle line. The stun bath, then the blade. You are about {0} weeks old. A hen in nature could have lived for years more.', '脚をつるされ、逆さまのままラインに乗ります。気絶用の水槽を通ったあと、刃です。約{0}週齢。自然な環境なら、まだ何年も生きられたはずです。', Math.round(L.end / 7)));
+    stages(L, [[m('Hatchery', 'ふ化場'), 0], [m('Pullet rearing', '育成'), 3], [m('Laying house', '採卵鶏舎'), 120], [m('Spent-hen transport', '廃鶏の輸送'), L.end - .5], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- pig ---------- */
+SP.pig = { label: m('Pig', 'ブタ'), nat: m('15–20 years', '15〜20年'), natDays: 6200,
+  nature: [m('A sow leaves the group to build a nest of grass and branches before giving birth. Piglets stay with her for weeks.', '母ブタは、出産の前に群れを離れ、草と枝で巣をつくります。子ブタは、数週間、母のそばで過ごします。'), m('Pigs root in soil for much of the day. They are curious, clean about where they dung, and form social groups.', 'ブタは、一日の多くを土を掘って過ごします。好奇心が強く、ふんをする場所を決めるきれい好きで、群れで暮らします。'), m('A pig in the wild is not an adult at six months. It is a juvenile still in its family group.', '野生のブタは、6か月ではまだ大人になりません。家族の群れのなかの子どもです。')],
+  build(L) {
+    L.sex = L.o.sex || pick(['male', 'female']);
+    const s = L.o.sys || wpick({ slat: .80, straw: .12, out: .08 }); L.sys = s;
+    L.sysName = { slat: m('Indoor, slatted or concrete floor', '屋内・すのこ床かコンクリート床'), straw: m('Indoor, straw-based', '屋内・わら敷き'), out: m('Outdoor or free-range', '屋外・放牧') }[s];
+    L.typ = 175;
+    L.base = { H: 82, C: s === 'slat' ? 48 : s === 'straw' ? 64 : 76, B: s === 'slat' ? 26 : s === 'straw' ? 55 : 78, O: 55 };
+    L.slope = { H: -10, C: -10, B: -6, O: 0 };
+    L.sysLine = s === 'slat' ? m('A pen with a hard floor and few or no things to chew or root in. Dozens of pigs of the same age share a barn.', '床は硬く、かじったり掘ったりできる物はほとんどありません。同じ年ごろの数十頭が、ひとつの豚舎で暮らします。') : s === 'straw' ? m('A pen with a deep bed of straw to root in.', '深くわらを敷いた囲いで、掘ることができます。') : m('Paddocks with huts and soil to root in.', '小屋と、掘れる土のある放牧場です。');
+    const planned = clamp(gauss(175, 10), 150, 210);
+    const sowRoute = L.sex === 'female' && (L.o.sow != null ? L.o.sow : rnd() < .04);
+    const wins = [
+      [0, 21, .14, pick([m('Crushed by the sow in the farrowing pen', '分娩房で母ブタに押しつぶされた'), m('Crushed by the sow in the farrowing pen', '分娩房で母ブタに押しつぶされた'), m('Died of cold or starvation in the first days', '生後数日のうちに、寒さか飢えで死亡'), m('Died of scours (diarrhoea)', '下痢で死亡')])],
+      [21, 70, .035, m('Died in the nursery (disease or failure to thrive after weaning)', '離乳後の子豚舎で死亡（病気、または育たなかった）')]];
+    if (!sowRoute) wins.push([70, planned, .03, m('Died in the finishing barn (disease, injury or heart failure)', '肥育舎で死亡（病気、けが、心不全）')], [planned - .5, planned, .003, m('Died during transport', '輸送中に死亡')]);
+    else wins.push([70, 150, .02, m('Died in the finishing barn', '肥育舎で死亡')]);
+    die(L, sowRoute ? 99999 : planned, wins, m('Slaughtered at about {0} months', '約{0}か月齢で食肉処理', Math.round(planned / 30.4)));
+    const early = sowRoute && L.end < 150;
+    E(L, 0, m('You are born in a farrowing crate, a metal pen the sow cannot turn around in. There are 12 or 13 of you. You weigh 1 to 1.5 kg.', '分娩ケージの中で生まれました。母ブタが向きを変えることもできない、金属の囲いです。きょうだいは12〜13頭。体重は1〜1.5kgです。'), { O: 10, C: -8 }, 'Birth');
+    E(L, [1, 3], m('Your tail may be cut short and your needle teeth clipped, and an iron supplement is given. In the EU routine tail-docking is illegal, but it is common elsewhere.', '尾を短く切られ、鋭い犬歯を削られ、鉄剤をもらうことがあります。EUでは決まった作業としての断尾は違法ですが、ほかの地域では普通に行われています。'), { H: -8, C: -8 }, 'Procedure', .75);
+    if (L.sex === 'male') E(L, [3, 10], m('You are castrated. In many countries this is done without pain relief. In Sweden pain relief is required.', '去勢されます。多くの国では、痛み止めなしで行われます。スウェーデンでは、鎮痛が義務です。'), { H: -10, C: -10 }, 'Procedure', .85);
+    E(L, 21, m('You are taken from the sow at about three weeks. In the wild piglets would nurse for 12 to 17 weeks. Your litter is mixed with others in the nursery.', '約3週間で、母ブタから離されます。野生なら12〜17週間は乳を飲みます。ほかの腹の子と一緒に、子豚舎へ入れられます。'), { O: -28, C: -10, H: -6 }, 'Weaning');
+    E(L, [35, 60], m('Pigs from different litters fight to set the order. Your ears and flank are bitten.', '別の腹の子ブタたちとの間で、順位を決めるケンカが起きます。耳や脇腹をかまれました。'), { H: -8, O: -8 }, 'Behaviour', s === 'out' ? .2 : .55);
+    if (!sowRoute || early) {
+      E(L, 70, s === 'slat' ? m('You move to the finishing barn, a bare pen with a slatted floor over a manure pit. About a square metre per pig as you grow.', '肥育舎へ移ります。ふん尿ピットの上に、すのこ床を張っただけの、飾り気のない囲い。大きくなっても、1頭あたり1平方メートルほどです。') : s === 'straw' ? m('You move to a pen with a straw bed. You root, you lie in a heap with the others.', 'わらを敷いた囲いに移りました。わらを掘り返し、仲間とくっついて眠ります。') : m('You move to a paddock. You root in the soil all day.', '放牧場に移りました。1日じゅう、土を掘っています。'), { B: s === 'slat' ? -12 : 14 }, 'Housing');
+      E(L, [80, 150], m('Nothing to root in and nothing to chew. Pigs bite the tails of the pig in front. Yours is bitten.', '掘る物も、かじる物もありません。ブタは、前にいるブタの尾をかじります。あなたの尾も、かじられました。'), { H: -10, C: -8, B: -8 }, 'Behaviour', s === 'slat' ? .5 : .12);
+      E(L, [90, 160], m('A joint in your leg hurts, from the weight you are carrying and the floor you stand on.', '脚の関節が痛みます。体重と、立っている床のせいです。'), { H: -10, B: -6 }, 'Health', s === 'slat' ? .15 : .06);
+      final(L,
+        m('You are loaded on a truck with pigs from other pens, strangers, in the heat or the cold. Pigs do not sweat and are vulnerable to heat in a crowded truck.', '別の囲いの、知らないブタたちといっしょにトラックへ。暑さも寒さも、そのままです。ブタは汗をかけないので、混んだトラックの中では暑さにとても弱いのです。'),
+        m('At the plant you are stunned with CO₂ gas or electric tongs, then bled out. In one field study, 3% to 12.5% of pigs, depending on method, showed signs of insufficient stunning. You are about {0} months old and about 120 to 130 kg. In biological terms you are still an adolescent.', '処理場では、二酸化炭素ガスか電気のトングで気絶させられ、放血されます。ある現場調査では、方法によって3〜12.5％のブタに、気絶が不十分だった兆候がありました。約{0}か月齢で、体重は120〜130kgほど。生き物としては、まだ思春期です。', Math.round(L.end / 30.4)));
+      stages(L, [[m('Farrowing crate', '分娩ケージ'), 0], [m('Nursery', '子豚舎'), 21], [m('Finishing barn', '肥育舎'), 70], [m('Transport', '輸送'), L.end - .5], [m('Slaughter', '屠殺'), L.end - .05]]);
+    } else {
+      const crate = rnd() < .55; L.crate = crate;
+      L.sysName = crate ? m('Breeding sow, gestation crates', '繁殖母豚・妊娠ストール') : m('Breeding sow, group housing', '繁殖母豚・群飼い');
+      L.slaughtered = true; L.typ = 1200;
+      const n = clamp(Math.round(gauss(4.2, 1.6)), 2, 8);
+      L.base = { H: 76, C: crate ? 34 : 52, B: crate ? 14 : 40, O: 40 };
+      L.slope = { H: -30, C: -14, B: -4, O: 0 };
+      L.sysLine = crate ? m('Metal stalls the length of your body. You cannot turn around for most of your adult life.', '体の長さしかない金属のストールです。成豚になってからの大半、向きを変えることもできません。') : m('Group housing during pregnancy, but individual crates for farrowing and nursing.', '妊娠中は群飼いですが、分娩と授乳のあいだは1頭ずつのケージに入ります。');
+      let end = 334 + 145 * (n - 1) + 21 + rr(5, 25), cause = m('Sold for slaughter after {0} litters', '{0}回の出産のあと、食肉用に売られた', n), sl = true;
+      for (let k = 0; k < n; k++) if (rnd() < .045) { const d = rr(334 + 145 * k - 20, 334 + 145 * k + 120); if (d < end) { end = d; cause = m('Died on the farm (injury, prolapse, or disease)', '農場で死亡（けが、脱出症、病気）'); sl = false; } }
+      L.end = end; L.cause = cause; L.slaughtered = sl;
+      L.ev = L.ev.filter(e => e.d < 150);
+      E(L, 150, m('You are chosen as a replacement gilt. About 1 in 25 females is. The rest go to slaughter at about six months.', '更新用の若い母豚に選ばれました。メスの25頭に1頭ほどが選ばれます。残りは、約6か月で食肉に。'), { H: 4 }, 'Selection');
+      E(L, 220, m('You are bred, by artificial insemination, for the first time.', '初めての人工授精を受けます。'), { C: -4, B: -6 }, 'Breeding');
+      for (let k = 0; k < n; k++) {
+        const f = 334 + 145 * k;
+        E(L, f - 114 + 4, crate ? m('You are pregnant. You live in a gestation stall for four months. You can stand up and lie down. You cannot turn around.', '妊娠中です。4か月のあいだ、妊娠ストールで過ごします。立つことも伏せることもできますが、向きを変えることはできません。') : m('You are pregnant, in a group pen with other sows, a little more room, still a concrete floor.', '妊娠中。ほかの母豚たちと群飼いの囲いにいます。少し広くなりましたが、床はコンクリートのままです。'), { B: crate ? -12 : -2, C: crate ? -10 : -2 }, 'Gestation');
+        E(L, f - 7, m('Six or seven days before birth you are moved to a farrowing crate. You have the urge to build a nest and there is nothing to build it from.', '出産の6〜7日前に、分娩ケージに移されます。巣をつくりたい気持ちは強くなるのに、材料がまったく与えられません。'), { B: -12, C: -8 }, 'Farrowing');
+        E(L, f, m('You give birth. This is litter {0}. About 12 or 13 piglets. You nurse them lying on your side with metal bars on either side.', '出産します。これが{0}回目。子ブタは12〜13頭です。両側を金属の柵にはさまれて、横向きに授乳します。', k + 1), { O: 6, H: -6 }, 'Birth');
+        E(L, f + 21, m('Your piglets are taken away after three weeks. Within days you are bred again. You have about 2.4 litters a year.', '3週間で、子ブタは取り上げられます。数日後には、また交配です。1年に2.4回ほどの出産になります。'), { O: -22, H: -10 }, 'Weaning');
+      }
+      final(L, m('Your body is worn out or you have stopped conceiving. You are sold as a cull sow and trucked to slaughter.', '体が消耗したのか、妊娠しなくなりました。廃用の母豚として売られ、屠殺場へ運ばれます。'),
+        m('Your life ends at about {0} years, after {1} litters. A pig can live 15 to 20 years.', '約{0}歳、{1}回の出産のあとで、生涯を終えます。ブタは本来、15〜20年生きられる動物です。', (L.end / 365.25).toFixed(1), n),
+        m('You die on the farm: {0}.', '農場で死にました。原因：{0}。', { msg: L.cause }));
+      stages(L, [[m('Piglet and gilt', '子ブタと若い母豚'), 0], [m('Breeding herd', '繁殖群'), 220], [m('Slaughter', '屠殺'), L.end - .05]]);
+    }
+  } };
+
+/* ---------- dairy cow ---------- */
+SP.dairyF = { label: m('Dairy cow', '乳牛'), nat: m('15–20 years', '15〜20年'), natDays: 6200,
+  nature: [m('A cow gives birth away from the herd, then licks and stays with her calf. They bond within hours. A calf nurses for about 8 to 11 months.', '母牛は、群れを離れて出産し、子牛をなめて、そばにつきそいます。数時間で、親子の絆ができます。子牛は8〜11か月ほど、乳を飲みます。'), m('Cows graze for 8 hours a day, ruminate, and prefer to lie on soft ground.', '牛は、1日8時間ほど草を食べ、反芻し、やわらかい地面に横になるのを好みます。'), m('A cow can live 15 to 20 years. Most dairy cows are gone by 5 or 6.', '牛の寿命は15〜20年。乳牛の多くは、5〜6歳までに群れからいなくなります。')],
+  build(L) {
+    const s = L.o.sys || wpick({ stall: .25, free: .45, pasture: .30 }); L.sys = s; L.sex = 'female';
+    L.sysName = { stall: m('Tie-stall barn', 'つなぎ飼いの牛舎'), free: m('Free-stall barn', 'フリーストール牛舎'), pasture: m('Pasture-based dairy', '放牧中心の酪農') }[s];
+    L.typ = 1800;
+    L.base = { H: 78, C: { stall: 38, free: 54, pasture: 72 }[s], B: { stall: 22, free: 44, pasture: 74 }[s], O: 55 };
+    L.slope = { H: -22, C: -8, B: -2, O: 0 };
+    L.sysLine = { stall: m('You are tied by the neck in a stall; you can stand and lie down, but not walk, for much of the year.', '首をつながれたままです。立ち上がることと伏せることはできますが、1年のほとんどは歩けません。'), free: m('A large shed of cubicles, concrete alleys and a milking parlour. You walk on concrete.', '仕切りのある寝床、コンクリートの通路、搾乳室が並ぶ大きな牛舎です。歩くのは、コンクリートの上。'), pasture: m('You graze for much of the year, and are brought in for milking.', '1年の多くは放牧で、搾乳のときだけ連れてこられます。') }[s];
+    const n = clamp(Math.round(gauss(3.2, 1.2)), 1, 7), c0 = gauss(740, 30);
+    const planned = c0 + 400 * (n - 1) + rr(200, 330);
+    const wins = [[0, 60, .065, m('Died as a calf (scours or pneumonia)', '子牛のときに死亡（下痢か肺炎）')], [60, 730, .015, m('Died as a heifer (disease or injury)', '育成牛のときに死亡（病気かけが）')]];
+    for (let k = 0; k < n; k++) wins.push([c0 + 400 * k, c0 + 400 * k + 380, .045, m('Died on the farm (disease, injury or metabolic illness)', '農場で死亡（病気、けが、代謝の病気）')]);
+    const cull = wpick({ a: .17, b: .14, c: .14, d: .12, e: .43 });
+    const CULL = { a: m('Culled for infertility (failed to get pregnant again)', '不妊（また妊娠しなかった）で淘汰'), b: m('Culled for mastitis (udder infection)', '乳房炎で淘汰'), c: m('Culled for lameness', '跛行（脚の障害）で淘汰'), d: m('Culled for other injury or illness', 'そのほかのけがや病気で淘汰'), e: m('Culled for low milk yield or an economic decision', '乳量の低下や経営判断で淘汰') };
+    die(L, planned, wins, CULL[cull]);
+    E(L, 0, m('You are born. Your mother licks you for a few minutes. Within hours, usually, you are taken from her. She will call for you.', '生まれました。母牛が数分間、あなたをなめてくれます。ふつうは数時間のうちに、母牛から引き離されます。母牛は、呼び続けます。'), { O: -50, C: -6 }, 'Birth');
+    E(L, .5, m('You are fed colostrum from a bottle, then milk or replacer. You are housed alone in a hutch or small pen for your first weeks.', '初乳を哺乳瓶で飲み、そのあとは牛乳か代用乳です。最初の数週間は、小屋か小さな囲いに1頭だけで入れられます。'), { O: -8 }, 'Rearing');
+    E(L, [21, 50], m('The horn buds are burned out with a hot iron. Best practice is a local anaesthetic plus a painkiller, but calves feel pain for at least three weeks afterwards.', '角の芽を、焼きごてで焼きます。望ましいのは局所麻酔と鎮痛剤を使うことですが、それでも子牛は少なくとも3週間は痛みが続きます。'), { H: -6, C: -6 }, 'Procedure', .9);
+    E(L, 60, m('You are weaned onto solid feed and moved to a group of heifers. A calf would still be nursing.', '固形の飼料に切り替わり、若い雌牛の群れに移ります。本来ならまだ、乳を飲んでいる時期です。'), { O: 14, B: 6 }, 'Rearing');
+    E(L, 450, m('You are bred for the first time by artificial insemination.', '初めて、人工授精を受けます。'), { B: -4 }, 'Breeding');
+    for (let k = 0; k < n; k++) {
+      const c = c0 + 400 * k;
+      E(L, c, k === 0 ? m('You give birth to your first calf. It is taken from you. Cows may bellow day and night and return to the place they last saw the calf.', '最初の子牛を産みました。子牛は、すぐに連れていかれます。母牛は昼も夜も鳴き続け、子牛を最後に見た場所に戻ることがあります。') : m('You calve again. The calf is removed again.', 'また出産しました。子牛は、また連れていかれます。'), { O: -28, H: -6 }, 'Calving');
+      E(L, c + 20, m('You are milked two or three times a day. A cow of this breed gives 25 litres of milk or more a day, several times what a calf would drink. Your body feeds the milk before itself.', '1日2〜3回、搾乳されます。この品種は1日に25リットル以上の乳を出します。子牛が飲む量の何倍にもなります。自分の体より先に、乳をつくっている状態です。'), { H: -8 }, 'Milking');
+      E(L, c + rr(40, 240), m('Your foot hurts. About 3 in 10 dairy cows are lame at any time in British surveys, and it is one of the main reasons cows leave the herd.', '足が痛みます。英国の調査では、乳牛のおよそ3割がいつも跛行しています。群れから外される理由として、いちばんよくあるものの一つです。'), { H: -18, B: -12, C: -8 }, 'Health', { stall: .33, free: .31, pasture: .2 }[s]);
+      E(L, c + rr(30, 280), m('Your udder is infected. The quarter is hot, swollen, and the milk is changed. Clinical mastitis strikes roughly 13 to 40 cows in every 100 each year.', '乳房が感染しました。熱をもって腫れ、乳の様子も変わります。臨床型の乳房炎は、毎年100頭のうち13〜40頭ほどの牛を襲います。'), { H: -16, C: -8 }, 'Health', .3);
+      E(L, c + 305, m('You are dried off for about two months, then bred again.', '約2か月の乾乳期に入り、そのあと、また交配されます。'), {}, 'Dry period');
+    }
+    final(L,
+      m('You are sold as a cull cow and trucked to slaughter. Cows in this state can be thin, lame or have a sore udder when loaded.', '廃用牛として売られ、屠殺場へ運ばれます。この状態の牛は、積み込みのとき、やせていたり、跛行していたり、乳房が痛んでいたりすることがあります。'),
+      m('You are stunned with a captive bolt and bled out. You are {0} years old and have had {1} calves. A cow can live 15 to 20 years.', '捕獲ボルトで気絶させられ、放血されます。{0}歳。子牛は{1}頭産みました。牛は本来、15〜20年生きられます。', (L.end / 365.25).toFixed(1), n));
+    stages(L, [[m('Calf and heifer', '子牛と育成牛'), 0], [m('Milking herd', '搾乳群'), c0], [m('Cull and transport', '淘汰と輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- dairy-bred male calf ---------- */
+SP.dairyM = { label: m('Dairy-bred male calf', '乳牛の雄子牛'), nat: m('15–20 years', '15〜20年'), natDays: 6200,
+  nature: [m('A calf nurses for months and stays close to its mother, learning the herd.', '子牛は数か月乳を飲み、母牛のそばで、群れのことを覚えていきます。'), null, null],
+  build(L) {
+    const s = L.o.sys || wpick({ bobby: .35, veal: .25, beef: .40 }); L.sys = s; L.sex = 'male';
+    L.sysName = { bobby: m('Surplus calf sold within days ("bobby calf")', '数日で売られる余剰の子牛（ボビーカーフ）'), veal: m('Raised for veal', 'ヴィール（子牛肉）用に育てられる'), beef: m('Raised for beef', '牛肉用に育てられる') }[s];
+    L.typ = { bobby: 10, veal: 170, beef: 560 }[s];
+    L.base = { H: 80, C: 50, B: 35, O: 12 }; L.slope = { H: -10, C: -8, B: -4, O: 0 };
+    L.sysLine = m('Dairy cows have to calve to make milk, and half of the calves are male. They do not give milk and are the wrong shape for most beef.', '乳牛は、乳を出すために出産し続ける必要があり、生まれる子牛の半分はオスです。オスは乳を出さず、肉用牛としても体つきが向いていません。');
+    const planned = { bobby: rr(5, 14), veal: clamp(gauss(170, 35), 100, 260), beef: clamp(gauss(560, 60), 420, 700) }[s];
+    die(L, planned, [[0, 14, .065, m('Died as a young calf (scours, pneumonia or weakness after sale)', '幼い子牛のときに死亡（下痢、肺炎、売られたあとの衰弱）')], [14, planned, s === 'bobby' ? 0 : .03, m('Died of pneumonia or disease', '肺炎や病気で死亡')]], slAt(planned));
+    E(L, 0, m('You are born. Your mother licks you for a few minutes. Within hours you are taken away from her. She will call for you.', '生まれました。母牛が数分間、あなたをなめてくれます。数時間のうちに、母牛から離されます。母牛は、呼び続けます。'), { O: -50, C: -6 }, 'Birth');
+    E(L, .4, m('You get colostrum if the farm is careful about it. A calf that does not drink it in the first hours is far more likely to get sick.', '農場が気をつけていれば、初乳がもらえます。生まれて最初の数時間に初乳を飲めなかった子牛は、病気にかかりやすくなります。'), {}, 'Rearing');
+    E(L, [1, 4], m('You are sold. A dealer collects you with other calves, some only days old.', '売られます。業者が、ほかの子牛といっしょに集めていきます。生まれて数日の子もいます。'), { C: -10, O: -6 }, 'Sale');
+    E(L, [2, 5], m('You go to an auction or a collecting yard. Calves this young have weak immune systems. Many are hungry for the whole day.', '競り場か集荷場へ。ここまで幼いと、免疫がまだ弱いのです。丸一日おなかをすかせたままの子牛も、たくさんいます。'), { H: -12, C: -14 }, 'Transport');
+    if (s === 'veal') E(L, [10, 100], m('You are raised on a milk-replacer diet, in a small pen or hutch or a group pen, depending on where you are. Veal calves are fed to grow fast.', '代用乳で育てられます。国や農場によって、小さな囲いや小屋だったり、集団の囲いだったりします。子牛肉用の子牛は、早く育つように餌が調整されます。'), { B: -10, C: -8 }, 'Housing');
+    if (s === 'beef') E(L, [30, 200], m('You are bought by a beef-on-dairy feeder and raised on grain with other young bulls and steers. In a Kansas study of over 500 beef-on-dairy steers, liver abscesses ranged from 7.6% to above 20% depending on diet.', '酪農家の子牛を買い取る肥育業者に引き取られ、ほかの若い雄牛といっしょに穀物で育てられます。カンザスでの500頭超の研究では、餌によって肝臓の膿瘍が7.6％から20％超まで開きました。'), { H: -8 }, 'Health');
+    final(L,
+      m('You are loaded onto a truck to the abattoir.', 'トラックに積まれ、屠殺場へ向かいます。'),
+      m('You are stunned and killed at the age of {0}. A cow of your breed could live 15 to 20 years.', '{0}で気絶させられ、殺されます。この品種の牛は、本来15〜20年生きられます。', { span: L.end }),
+      s === 'bobby' ? m('You die within days of your birth, as a surplus calf.', '生まれて数日で、余剰の子牛として死にました。') : null);
+    stages(L, [[m('Birth farm', '生まれた農場'), 0], [m('Sale and transport', '売却と輸送'), 1], [m('Raising', '飼育'), 4], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- beef cattle ---------- */
+SP.beef = { label: m('Beef cattle', '肉牛'), nat: m('15–20 years', '15〜20年'), natDays: 6200,
+  nature: [m('A calf nurses for 8 to 11 months and stays close to its mother. Cattle graze and ruminate most of the day.', '子牛は8〜11か月、乳を飲み、母牛のそばにいます。牛は、一日のほとんどを草を食べ、反芻して過ごします。'), m('Cattle settle who stands where by gentle pushing, not by fights.', '牛は、争うのではなく、やんわり押し合って、誰がどこに立つかを決めます。'), m('Cattle can live 15 to 20 years.', '牛は15〜20年生きられます。')],
+  build(L) {
+    const s = L.o.sys || wpick({ pasture: .45, feedlot: .55 }); L.sys = s; L.sex = pick(['male', 'female']);
+    L.sysName = { pasture: m('Pasture-raised and pasture-finished', '放牧で育ち、放牧で仕上げ'), feedlot: m('Pasture calf, grain-fed in a feedlot', '放牧で育ち、肥育場で穀物飼育') }[s];
+    L.typ = s === 'pasture' ? 760 : 450;
+    L.base = { H: 84, C: s === 'pasture' ? 74 : 54, B: s === 'pasture' ? 80 : 40, O: 70 }; L.slope = { H: s === 'feedlot' ? -14 : -4, C: s === 'feedlot' ? -10 : 0, B: 0, O: 0 };
+    L.sysLine = s === 'pasture' ? m('You stay on grass until slaughter.', '屠殺の日まで、ずっと草地にいます。') : m('You start on pasture with your mother, then move to a feedlot: a bare dirt pen with hundreds of cattle, fed a grain-rich diet.', '最初は母牛と放牧地で過ごし、そのあと肥育場へ。数百頭が入る、土がむき出しの囲いで、穀物の多い餌を食べます。');
+    const planned = s === 'pasture' ? gauss(760, 80) : gauss(450, 50);
+    die(L, planned, [[0, 30, .04, m('Died as a newborn calf', '生まれたばかりの子牛のときに死亡')], [30, 210, .025, m('Died on the farm (disease or injury)', '農場で死亡（病気かけが）')], [210, planned, s === 'feedlot' ? .03 : .01, m('Died of respiratory disease or other illness', '呼吸器の病気などで死亡')]], slAt(planned));
+    E(L, 0, m('You are born in a paddock. Your mother stays close.', '放牧地で生まれました。母牛はすぐそばにいます。'), { O: 12 }, 'Birth');
+    E(L, [3, 30], m('You get an ear tag, and perhaps a brand, or a vaccination. Branding with a hot iron is still used in some regions.', '耳に標識がつき、焼き印やワクチンを受けることもあります。焼きごての焼き印は、いまも一部の地域で使われています。'), { H: -5, C: -6 }, 'Procedure', .6);
+    E(L, [30, 120], L.sex === 'male' ? m('You are castrated, and your horn buds are removed. Without pain relief in many places.', '去勢され、角の芽も取り除かれます。多くの地域で、痛み止めは使われません。') : m('Your horn buds are removed. Without pain relief in many places.', '角の芽が取り除かれます。多くの地域で、痛み止めは使われません。'), { H: -10, C: -8 }, 'Procedure', .75);
+    E(L, 210, m('You are weaned. You are taken from your mother at about seven months. Both call for days.', '離乳です。約7か月で、母牛から引き離されます。親子とも、何日も呼び合います。'), { O: -35, C: -8 }, 'Weaning');
+    if (s === 'feedlot') {
+      E(L, 214, m('You are sold at auction and trucked, sometimes for many hours, to a feedlot. Transport is among the most stressful events in a feeder calf\'s life, and raises the chance of respiratory disease.', '競りで売られ、ときには何時間もかけて肥育場へ運ばれます。輸送は、育成中の子牛にとって最もストレスの大きい出来事のひとつで、呼吸器の病気にかかるリスクを上げます。'), { H: -12, C: -14 }, 'Transport');
+      E(L, 240, m('The pen is dirt and, in rain, mud, with no shade or grass. A large number of cattle share it. You are fed a ration with more grain each week.', '囲いは土で、雨が降ればぬかるみ。日陰も草もありません。大勢の牛が同じ囲いに入ります。餌は、週ごとに穀物の割合が増えていきます。'), { B: -20, C: -14 }, 'Housing');
+      E(L, [225, 300], m('You catch bovine respiratory disease. A USDA survey found it in 16.2% of cattle placed on feed, and it is the leading cause of illness and death in feedlots.', '牛呼吸器病にかかりました。米国農務省の調査では、肥育場に入った牛の16.2％が発症しています。肥育場で病気や死亡の最も大きな原因です。'), { H: -22, C: -8 }, 'Health', .16);
+      E(L, [300, 420], m('A diet heavy in grain makes your rumen acidic, and bacteria can enter the liver. Reported rates of liver abscess in feedlots are 12% to 32%.', '穀物の多い餌のせいで第一胃が酸性になり、細菌が肝臓に入り込むことがあります。肥育場では、肝臓の膿瘍が12〜32％で報告されています。'), { H: -10 }, 'Health', .22);
+      E(L, [300, 430], m('Summer heat arrives. There is little shade. Cattle in feedlots pant, stand in groups and eat less.', '夏の暑さがやってきました。日陰はわずかです。肥育場の牛は、あえぎ、かたまって立ち、食べる量が減ります。'), { H: -8, C: -12 }, 'Health', .35);
+    } else {
+      E(L, [250, 600], m('You graze in the open, in a herd, with shade and water you can reach. Droughts and cold snaps are hard on you.', '群れの一員として、外で草を食べます。日陰も水も届く場所です。干ばつや寒波には、苦労させられます。'), { B: 12, C: 4 }, 'Behaviour');
+    }
+    final(L, m('You are trucked to the abattoir. Longer time on the road means more shrink (weight loss), more lameness, and sometimes deaths.', '屠殺場へ運ばれます。道のりが長いほど、体重は減り、脚を痛める牛が増え、命を落とす牛も出ます。'),
+      m('You are stunned with a captive bolt and bled out. In a field study, 13.5% of cattle stunned this way showed signs of insufficient stunning. You are {0} old.', '捕獲ボルトで気絶させられ、放血されます。ある現場調査では、この方法で気絶させた牛の13.5％に、不十分だった兆候がありました。{0}。', { span: L.end }));
+    stages(L, [[m('With mother', '母牛のそば'), 0], s === 'feedlot' ? [m('Feedlot', '肥育場'), 214] : [m('Grazing', '放牧'), 210], [m('Transport', '輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- sheep ---------- */
+SP.sheep = { label: m('Sheep', 'ヒツジ'), nat: m('10–12 years', '10〜12年'), natDays: 4200,
+  nature: [m('A ewe gives birth apart from the flock, and bonds with her lamb in minutes. A lamb nurses for months.', '雌羊は群れを離れて出産し、数分で子羊と絆を結びます。子羊は数か月、乳を飲みます。'), m('Sheep graze in flocks and follow each other. A lone sheep is frightened.', 'ヒツジは群れで草を食べ、たがいについて動きます。1頭だけになると、おびえます。'), m('Sheep can live 10 to 12 years.', 'ヒツジは10〜12年生きられます。')],
+  build(L) {
+    const s = L.o.sys || wpick({ lamb: .62, feed: .10, wool: .27, exp: .01 }); L.sys = s; L.sex = pick(['male', 'female']);
+    L.sysName = { lamb: m('Pasture-raised meat lamb', '放牧で育つ、食肉用の子羊'), feed: m('Feedlot-finished lamb', '肥育場で仕上げる子羊'), wool: m('Wool flock (Merino type)', '羊毛用の群れ（メリノ種）'), exp: m('Wether sent on a live-export ship', '生体輸出の船に乗る去勢羊') }[s];
+    L.typ = { lamb: 220, feed: 150, wool: 1600, exp: 600 }[s];
+    L.base = { H: 80, C: s === 'feed' ? 50 : 70, B: s === 'feed' ? 40 : 76, O: 72 }; L.slope = { H: -8, C: -6, B: 0, O: 0 };
+    L.sysLine = { lamb: m('You graze with your flock. This is not a factory farm, and it is the most common way sheep are raised.', '群れの仲間と草を食べています。ここは工場式ではありません。ヒツジの飼い方としては、いちばん一般的なものです。'), feed: m('After pasture you are fattened in a pen on grain.', '放牧のあとは、囲いのなかで穀物を食べて太らされます。'), wool: m('You are kept for your wool, shorn every year, until your wool production falls.', '羊毛をとるために飼われ、毎年毛を刈られます。毛の生産が落ちるまで、続きます。'), exp: m('You are a wool-flock wether sold to be shipped live to be slaughtered abroad.', '羊毛用の群れの去勢羊で、生きたまま船で運ばれ、国外で屠殺されることになっています。') }[s];
+    const planned = Math.max({ lamb: gauss(220, 35), feed: gauss(150, 20), wool: gauss(1600, 300), exp: gauss(600, 60) }[s], 90);
+    die(L, planned, [[0, 3, .09, m('Died within 3 days of birth (cold, hunger, or a hard birth)', '生後3日以内に死亡（寒さ、飢え、難産）')], [3, 60, .03, m('Died as a young lamb (disease, predator or weather)', '幼い子羊のときに死亡（病気、捕食者、天候）')], [60, planned, s === 'wool' ? .05 : .02, m('Died of disease, parasites or weather', '病気、寄生虫、天候で死亡')], [Math.max(planned - 25, 100), planned, s === 'exp' ? .012 : 0, m('Died on the ship (heat stress)', '船の上で死亡（熱ストレス）')]], slAt(planned));
+    E(L, 0, m('You are born outdoors, in a paddock. Lamb losses range from 9% to 20% worldwide, and over 80% of lamb deaths are in the first three days. You are alive and you are with your mother.', '屋外の放牧地で生まれます。子羊の死亡は世界で9〜20％、そのうち8割以上が最初の3日間に起きます。あなたは生きていて、母羊のそばにいます。'), { O: 12 }, 'Birth');
+    E(L, [1, 14], m('A rubber ring is put around your tail, and on a male the scrotum. The tail drops off in two weeks. Usually there is no anaesthetic.', '尾にゴムの輪がはめられます。オスは、陰嚢にもはめられます。尾は2週間ほどで落ちます。たいてい、麻酔はありません。'), { H: -10, C: -10 }, 'Procedure', .85);
+    if (s === 'wool') E(L, [30, 90], m('Where mulesing is still practised (mainly Australia), strips of skin are cut from around the tail to limit flystrike. It is often done with little or no pain relief.', 'ミュールジングがいまも行われている地域（おもにオーストラリア）では、ハエによる被害を防ぐため、尾のまわりの皮膚が帯状に切り取られます。痛み止めが少ない、またはまったくないことも多いそうです。'), { H: -14, C: -12 }, 'Procedure', .35);
+    E(L, [90, 130], m('You are weaned. You are separated from your mother.', '離乳です。母羊から離されます。'), { O: -22 }, 'Weaning');
+    E(L, [120, 300], m('Flies lay eggs in dirty wool. Flystrike is a slow, painful condition.', 'ハエが汚れた毛に卵を産みつけます。ハエ症は、ゆっくり進み、強い痛みをともなう症状です。'), { H: -16 }, 'Health', .12);
+    if (s === 'wool') {
+      for (let k = 0; k < 6; k++) E(L, 250 + 365 * k, m('You are shorn. Shearing is quick and rough, and sheep are held on their backs. Cuts are common.', '毛を刈られます。刈り取りは手早く、荒っぽく、ヒツジは仰向けに押さえつけられます。切り傷はよく起こります。'), { C: -6, H: -3 }, 'Shearing');
+      E(L, [400, 1500], m('There is no rain. The paddock is bare and hand-fed grain is brought in.', '雨が降りません。放牧地は地肌がむき出しで、穀物が運び込まれます。'), { H: -8, C: -8 }, 'Weather', .3);
+    }
+    if (s === 'feed') E(L, 80, m('You are moved from pasture to a pen of grain-fed lambs. There is no grass.', '放牧地から、穀物で育てる子羊の囲いに移されます。草はありません。'), { B: -22, C: -14 }, 'Housing');
+    if (s === 'exp') { E(L, 530, m('You are trucked to a port and held in a pen for days. Everything is new to you.', 'トラックで港へ運ばれ、何日も囲いの中で待ちます。見るものすべてが初めてです。'), { C: -14, O: -10 }, 'Transport'); E(L, 560, m('You are shipped for two to three weeks on a livestock vessel. Heat stress was the major cause of deaths on voyages studied to the Middle East.', '家畜運搬船で、2〜3週間の航海です。中東向けの航海を調べた研究では、死亡の主な原因は熱ストレスでした。'), { H: -20, C: -20 }, 'Transport'); }
+    final(L, m('You are mustered, loaded on a truck and driven to the abattoir. Sheep are frightened by new places and by noise.', '追い集められ、トラックに積まれ、屠殺場へ。ヒツジは、見慣れない場所や物音をひどくこわがります。'),
+      m('You are stunned and your throat is cut. You are {0} old. A sheep can live 10 to 12 years.', '気絶させられ、喉を切られます。{0}。ヒツジは本来、10〜12年生きられます。', { span: L.end }));
+    stages(L, [[m('With mother', '母牛のそば'), 0], [m('Grazing', '放牧'), 100], [m('Transport', '輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- duck ---------- */
+SP.duck = { label: m('Duck', 'アヒル'), nat: m('8–12 years', '8〜12年'), natDays: 3300,
+  nature: [m('A duck dabbles, dives and bathes in water. It needs to dip its head in water to clean its eyes and nostrils.', 'アヒルは、水の中でエサをあさり、もぐり、水浴びをします。目や鼻の穴をきれいにするには、頭を水に入れる必要があります。'), m('Ducklings follow their mother onto water within a day of hatching.', 'ひなは、ふ化して1日もたたないうちに、母鳥のあとについて水に入ります。'), null],
+  build(L) {
+    const k = L.o.sys || wpick({ meat: .985, foieM: .0075, foieF: .0075 }); L.sys = k;
+    L.sex = k === 'foieF' ? 'female' : 'male';
+    L.sysName = { meat: m('Meat duck, indoor shed', '食肉用のアヒル・屋内の鶏舎'), foieM: m('Male mulard duck raised for foie gras', 'フォアグラ用に育てられる雄のミュラー種'), foieF: m('Female mulard duckling, hatched for the foie gras trade', 'フォアグラ産業のためにふ化した、雌のミュラー種のひな') }[k];
+    if (k === 'foieF') {
+      L.typ = 1; L.base = { H: 95, C: 60, B: 50, O: 20 }; L.slope = {}; L.sysLine = m('Mulard ducks are a hybrid. Females are not used for foie gras.', 'ミュラー種は交雑種で、メスはフォアグラには使われません。');
+      die(L, .3, [], m('Killed at the hatchery within hours of hatching', 'ふ化から数時間以内に、ふ化場で殺された')); L.slaughtered = false;
+      E(L, 0, m('You hatch in a machine. No mother duck was ever there.', '機械の中でふ化します。母鳥は、そこにはいませんでした。'), { O: -10 }, 'Birth');
+      L.ev.push({ d: L.end, msg: m('You are sorted as a female and killed, by gas or a grinder, in the first hours of your life. Animal Law Europe estimates up to 40 million female ducklings a year. Industry representatives dispute how widespread this is.', 'メスと選別され、生後数時間のうちに、ガスか粉砕機で殺されます。Animal Law Europe は、年に最大4,000万羽と推計しています。業界の関係者は、そこまで広がっているとは考えていません。'), fx: { H: -100 }, tag: 'Death', fin: true });
+      stages(L, [[m('Hatchery', 'ふ化場'), 0]]); return;
+    }
+    if (k === 'meat') {
+      L.typ = 43; L.base = { H: 84, C: 55, B: 30, O: 40 }; L.slope = { H: -18, C: -10, B: 0, O: 0 };
+      L.sysLine = m('A shed of thousands of ducks on a litter floor. No pool, just nipple drinkers.', '敷料の床に、何千羽ものアヒル。泳げるプールはなく、飲み口のついた給水器があるだけです。');
+      const planned = clamp(gauss(43, 3), 36, 49);
+      die(L, planned, [[0, 7, .02, m('Died in the first week', '最初の1週間で死亡')], [7, planned, .03, m('Died of disease or leg problems', '病気や脚の問題で死亡')]], slAtD(planned));
+      E(L, 0, m('You hatch in a machine, a flock of thousands. No mother duck was ever there.', '機械の中で、何千羽もの仲間とふ化します。母鳥は、そこにはいませんでした。'), { O: -10 }, 'Birth');
+      E(L, 1, m('You are in a shed on litter, with no water to swim in. Ducks need water to clean their eyes and nostrils, and to bathe. Drinkers give just enough to drink.', '敷料の鶏舎にいて、泳げる水はありません。アヒルは、目と鼻の穴を洗うため、そして水浴びのために水が必要です。給水器から出るのは、飲む分だけ。'), { B: -20, C: -8 }, 'Housing');
+      E(L, [14, 40], m('You grow fast. At 42 days a modern Pekin weighs about 3.6 kg. Your legs carry more than they were made for.', '成長が速く、42日で現代のペキン種は約3.6kgになります。脚は、本来の想定を超える重さを支えています。'), { H: -12, B: -8 }, 'Health', .3);
+      final(L, m('You are caught and crated, driven to slaughter.', 'つかまえられ、カゴに入れられて、屠殺場へ運ばれます。'), m('You are hung by the legs on a shackle line, stunned in a water bath, and killed. You are about {0} weeks old.', '脚をつるされてラインに乗り、水槽で気絶させられ、殺されます。約{0}週齢です。', Math.round(L.end / 7)));
+      stages(L, [[m('Hatchery', 'ふ化場'), 0], [m('Growing shed', '肥育舎'), 1], [m('Transport', '輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+      return;
+    }
+    L.typ = 85; L.base = { H: 82, C: 50, B: 28, O: 40 }; L.slope = { H: -30, C: -24, B: -6, O: 0 };
+    L.sysLine = m('Ducks are reared in groups, then moved to small cages or pens for the last two weeks, where they are force-fed.', 'アヒルは、群れで育てられます。最後の2週間は小さなケージか囲いに移され、強制給餌を受けます。');
+    const f0 = rr(63, 84), fd = rr(11, 15), planned = f0 + fd;
+    die(L, planned, [[0, 63, .027, m('Died before the force-feeding stage', '強制給餌が始まる前に死亡')], [f0, planned, .0073, m('Died during force-feeding', '強制給餌の最中に死亡')]], slAtD(planned));
+    E(L, 0, m('You hatch in a machine. About half of the ducklings in the hatchery were females. They were killed. You are male.', '機械の中でふ化します。ふ化場のひなの約半分はメスで、殺されました。あなたはオスです。'), { O: -10 }, 'Birth');
+    E(L, 14, m('You are reared with other ducks until you are about two months old. You are fast-growing, nervous, and a hybrid. This hybrid is not well suited to the next stage.', '約2か月になるまで、ほかのアヒルと育てられます。成長が速く、神経質で、交雑種。この交雑種は、次の段階にあまり向いていません。'), {}, 'Growth');
+    E(L, f0, m('You are moved to a cage or small pen. Twice a day, a metal pipe is pushed down your throat and a measured amount of corn mash is pumped in. Your liver swells. This lasts about {0} days.', 'ケージか小さな囲いに移されます。1日2回、金属の管を喉に差し込まれ、決まった量のトウモロコシのかゆを流し込まれます。肝臓がふくらんでいきます。これが約{0}日続きます。', Math.round(fd)), { H: -26, C: -26, B: -22 }, 'Force-feeding');
+    E(L, f0 + 6, m('Your liver is now several times its normal size. Breathing is hard. You pant and walk badly. Wing lesions and foot problems are common.', '肝臓は、ふつうの何倍もの大きさになりました。息が苦しく、あえぎながら、よろよろと歩きます。翼の傷や足の障害も、よく見られます。'), { H: -22, C: -12 }, 'Health');
+    final(L, m('You are caught and crated.', 'つかまえられ、カゴに入れられます。'), m('You are killed. Your weight is about 6.5 kg, up from about 4 kg before force-feeding. Roughly 37 million ducks and 700,000 geese are killed a year for French foie gras alone.', '殺されます。体重は約6.5kg。強制給餌の前は約4kgでした。フランスのフォアグラだけで、毎年およそ3,700万羽のアヒルと70万羽のガチョウが殺されています。'));
+    stages(L, [[m('Hatchery', 'ふ化場'), 0], [m('Rearing', '育成'), 1], [m('Force-feeding', '強制給餌'), f0], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- turkey ---------- */
+SP.turkey = { label: m('Turkey', '七面鳥'), nat: m('about 10 years', '約10年'), natDays: 3650,
+  nature: [m('A wild turkey hen leads her poults, who roost off the ground within two weeks.', '野生の雌の七面鳥は、ひなを連れて歩きます。ひなは、2週間もすれば、地面を離れた止まり木で眠るようになります。'), m('Turkeys forage in groups, roost in trees at night, and can fly short distances.', '七面鳥は、群れでエサを探し、夜は木の上で眠り、短い距離なら飛ぶこともできます。'), null],
+  build(L) {
+    L.sex = L.o.sex || pick(['male', 'female']); const s = L.o.sys || wpick({ shed: .96, range: .04 }); L.sys = s;
+    L.sysName = s === 'shed' ? m('Indoor shed, fast-growing breed', '屋内の鶏舎・急成長品種') : m('Outdoor access, fast-growing breed', '屋外に出られる・急成長品種');
+    const planned = L.sex === 'male' ? clamp(gauss(140, 10), 120, 165) : clamp(gauss(95, 8), 80, 115);
+    L.typ = L.sex === 'male' ? 140 : 95;
+    L.base = { H: 84, C: s === 'shed' ? 56 : 70, B: s === 'shed' ? 34 : 56, O: 35 }; L.slope = { H: -26, C: -10, B: -6, O: 0 };
+    L.sysLine = m('A large shed with a litter floor. The commercial breed has been bred for breast meat.', '敷料を敷いた、大きな鶏舎です。この商業品種は、胸肉をたくさんとるために改良されてきました。');
+    die(L, planned, [[0, 14, .03, m('Died in the first two weeks (failed to start eating, chilled)', '最初の2週間で死亡（食べ始められない、体の冷え）')], [14, planned, .05, m('Died of disease, heart failure or leg disorder', '病気、心不全、脚の障害で死亡')], [planned - 1, planned, .004, m('Died on the truck', '輸送中に死亡')]], m('Slaughtered at {0} weeks', '{0}週齢で食肉処理', Math.round(planned / 7)));
+    E(L, 0, m('You hatch in a machine. Up to a third of your upper beak is trimmed with a heat beam, and your toes may be trimmed.', '機械の中でふ化します。上くちばしの最大3分の1が熱線で切られ、足の指も切られることがあります。'), { H: -4, O: -10 }, 'Birth');
+    if (L.sex === 'male') E(L, .2, m('As a male you may also have your snood, the fleshy flap over the beak, removed.', 'オスは、くちばしの上にある肉のひだ（スヌード）を切り取られることもあります。'), { H: -4 }, 'Procedure', .6);
+    E(L, 1, m('Placed in a shed with thousands of other poults.', '何千羽もの仲間と一緒に、鶏舎に入れられます。'), {}, 'Housing');
+    E(L, [40, 90], m('You are growing much faster than your frame can carry. Males of this breed can reach about 14 kg of carcass by 20 weeks. Leg problems and joint disease are common.', '骨格が支えられる以上の速さで育っています。この品種のオスは、20週で枝肉が14kgほどになります。脚の障害や関節の病気は、よく見られます。'), { H: -14, B: -12 }, 'Health', .55);
+    E(L, [60, 110], m('Birds start to peck each other. Crowding and bright light increase it.', '鳥どうしで、つつき合いが始まります。過密と強い照明が、それを悪化させます。'), { H: -6, C: -8 }, 'Behaviour', .5);
+    final(L, m('Feed is withdrawn. You are caught by the legs and crated for transport.', '餌を止められます。脚をつかまれ、輸送用のカゴに入れられます。'),
+      m('You are hung by the legs, stunned, and killed. You are about {0} weeks old. Your heavy breast means your kind can no longer mate naturally; the next generation is bred by artificial insemination.', '脚をつるされ、気絶させられ、殺されます。約{0}週齢です。胸が重すぎて、この品種は自然に交尾できません。次の世代は、人工授精で生まれます。', Math.round(L.end / 7)));
+    stages(L, [[m('Hatchery', 'ふ化場'), 0], [m('Grow-out shed', '肥育舎'), 1], [m('Transport', '輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+/* ---------- rabbit ---------- */
+SP.rabbit = { label: m('Rabbit', 'ウサギ'), nat: m('8–10 years', '8〜10年'), natDays: 3300,
+  nature: [m('A wild rabbit digs a burrow, runs, hops and stands up on its hind legs to look around.', '野生のウサギは、巣穴を掘り、走り、跳ね、後ろ足で立って、あたりを見回します。'), m('Rabbits are social and groom each other.', 'ウサギは社会性があり、おたがいに毛づくろいをします。'), null],
+  build(L) {
+    const s = L.o.sys || wpick({ cage: .90, alt: .10 }); L.sys = s; L.sex = pick(['male', 'female']);
+    L.sysName = s === 'cage' ? m('Wire cage', '金網のケージ') : m('Floor pen or elevated pen', '床置きの囲いか、高床の囲い');
+    L.typ = 72;
+    L.base = { H: 72, C: s === 'cage' ? 38 : 60, B: s === 'cage' ? 20 : 50, O: 40 }; L.slope = { H: -16, C: -8, B: 0, O: 0 };
+    L.sysLine = s === 'cage' ? m('A wire-floor cage. EFSA rated welfare of growing rabbits as lowest in conventional cages among the six systems it compared.', '床が金網のケージです。EFSAは、比較した6つの飼育方式のうち、従来型のケージで育つウサギの福祉が、いちばん低いと評価しました。') : m('A pen where you can hop and move more, with gnawing material.', '跳ねたり動き回ったりできる囲いで、かじる物もあります。');
+    const planned = clamp(gauss(72, 6), 63, 90);
+    die(L, planned, [[0, 30, .06, m('Died in the nest or just after weaning', '巣の中か、離乳の直後に死亡')], [30, planned, .08, m('Died of digestive disease or other illness', '消化器の病気などで死亡')]], m('Slaughtered at {0} weeks', '{0}週齢で食肉処理', Math.round(planned / 7)));
+    E(L, 0, m('You are born in a nest box on a wire cage. You are one of about eight kits.', '金網ケージの巣箱で生まれました。きょうだいは8匹ほどです。'), { O: 10 }, 'Birth');
+    E(L, 30, m('You are weaned and moved with your litter to a fattening cage. You are a month old.', '離乳して、きょうだいと一緒に肥育用のケージへ。生後1か月になりました。'), { O: -10, C: -8 }, 'Weaning');
+    E(L, [40, 70], m('Your gut fails. Digestive disorders are the main cause of illness and death in growing rabbits from three weeks of age, EFSA says.', 'おなかをこわしました。EFSAによると、生後3週間を過ぎた成長期のウサギでは、消化器の障害が、病気と死亡の最大の原因です。'), { H: -22 }, 'Health', .28);
+    E(L, [35, 70], s === 'cage' ? m('The floor is wire. Your hocks are sore. You cannot stand up on your hind legs without touching the roof.', '床は金網で、かかとが痛みます。後ろ足で立とうとすると、天井にぶつかります。') : m('You can hop and run in the pen.', '囲いの中を、跳ねたり走ったりできます。'), { C: s === 'cage' ? -12 : 4, B: s === 'cage' ? -12 : 12 }, 'Housing');
+    final(L, m('You are crated and trucked.', 'カゴに入れられ、トラックで運ばれます。'), m('You are stunned and killed at about {0} weeks of age. A rabbit could live 8 to 10 years.', '約{0}週齢で気絶させられ、殺されます。ウサギは本来、8〜10年生きられます。', Math.round(L.end / 7)));
+    stages(L, [[m('Nest', '巣'), 0], [m('Fattening', '肥育'), 30], [m('Transport', '輸送'), L.end - 1], [m('Slaughter', '屠殺'), L.end - .05]]);
+  } };
+
+const W_REAL = { broiler: 66, layerF: 5, layerM: 5, duck: 4.2, turkey: .65, pig: 1.5, sheep: .6, beef: .2, dairyF: .06, dairyM: .11, rabbit: .4 };
+const W_EQUAL = Object.fromEntries(Object.keys(W_REAL).map(k => [k, 1]));
+
+function newLife(sp, o) {
+  const L = { sp, o, ev: [], st: [], end: 1, cause: null, slaughtered: true, base: { H: 80, C: 60, B: 50, O: 40 }, slope: { H: 0, C: 0, B: 0, O: 0 }, typ: 100, t: 0, i: 0, mins: o.mins || 6, acc: { H: 0, C: 0, B: 0, O: 0 }, fired: [] };
+  SP[sp].build(L);
+  L.ev.sort((a, b) => a.d - b.d);
+  L.label = SP[sp].label; L.nat = SP[sp].nat; L.natDays = SP[sp].natDays; L.nature = SP[sp].nature;
+  L.playSec = clamp(L.mins * 60 * L.end / L.typ, 40, L.mins * 60 * 1.6);
+  L.rate = L.end / L.playSec;
+  if (L.ev.length) L.ev[0].P = 0;
+  if (L.end > 3) {
+    let best = null;
+    for (const e of L.ev) if (e.d > L.end * .3 && e.d < L.end * .7 && (!best || Math.abs(e.d - L.end * .5) < Math.abs(best.d - L.end * .5))) best = e;
+    if (best) best.P = 1;
+    const pre = L.ev.filter(e => e.d > L.end * .7 && e.d < L.end - .01);
+    if (pre.length) pre[pre.length - 1].P = 2;
+  }
+  return L;
+}
+
+/* ================= app ================= */
+const A = { mode: 'equal', mins: 6, speed: 1, paused: false, V: 'home', L: null, H: [], hist: [], t0: Date.now(), pausedFor: null, last: 0 };
+function setView(v) { A.V = v; for (const id of ['home', 'life', 'end']) $(id).classList.toggle('hide', id !== v); window.scrollTo(0, 0); }
+function seg(id, cb) { const el = $(id); el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; [...el.children].forEach(c => c.classList.toggle('on', c === b)); cb(b.dataset.v); }); }
+
+function born() {
+  const w = A.mode === 'real' ? W_REAL : W_EQUAL;
+  A.L = newLife(wpick(w), { mins: A.mins });
+  A.H = Array.from({ length: 4 }, () => newLife(wpick(w), { mins: A.mins }));
+  A.hist = []; A.speed = 1; A.paused = false; A.pausedFor = null;
+  [...$('segSpeed').children].forEach(c => c.classList.toggle('on', c.dataset.v === '1'));
+  $('btnPause').textContent = ui('pause'); $('btnResume').classList.add('hide');
+  $('pauseCard').classList.add('hide'); $('stats').innerHTML = '';
+  relife(true); setView('life');
+  A.last = performance.now(); requestAnimationFrame(tick);
+}
+// (re)draw everything that depends on language or on the life
+function relife(fresh) {
+  const L = A.L; if (!L) return;
+  $('heroPic').innerHTML = PIC[ICON_OF[L.sp]]; $('heroPic').parentElement.style.setProperty('--ic', COLOR_OF[L.sp]);
+  $('heroKind').textContent = tx(L.label); $('heroSys').textContent = tx(L.sysName);
+  $('heroSex').textContent = L.sex ? tx(SX[L.sex]) : '';
+  $('natTxt').textContent = tx(L.nat);
+  buildStrip();
+  $('log').innerHTML = ''; for (const e of L.fired) addLog(e);
+  if (fresh) $('evt').innerHTML = '';
+  if (A.pausedFor) showPause(A.pausedFor);
+  renderStats(true);
+}
+const SLAB = { H: [['Health', '健康'], '--H'], C: [['Comfort', '快適さ'], '--C'], B: [['Behaviour', '行動'], '--B'], O: [['Company', '仲間'], '--O'] };
+const slab = k => SLAB[k][0][LANG === 'ja' ? 1 : 0];
+function statsNow(L) { const f = clamp(L.t / L.end, 0, 1), o = {}; for (const k of 'HCBO') o[k] = clamp(L.base[k] + (L.slope[k] || 0) * f + L.acc[k], 3, 100); return o; }
+function renderStats(rebuild) {
+  const s = statsNow(A.L), el = $('stats');
+  if (rebuild || !el.children.length) el.innerHTML = Object.keys(SLAB).map(k => `<div class="stat"><div class="lbl"><span>${slab(k)}</span><span id="sv${k}"></span></div><div class="bar"><i id="sb${k}" style="background:var(${SLAB[k][1]})"></i></div></div>`).join('');
+  for (const k in SLAB) { $('sv' + k).textContent = Math.round(s[k]); $('sb' + k).style.width = s[k] + '%'; }
+}
+const STC = ['#7a8f6f', '#a9895a', '#6f8da6', '#a37c9b', '#8a6f6f'];
+function buildStrip() {
+  const L = A.L; let h = '';
+  L.st.forEach((s, i) => { const nx = L.st[i + 1] ? L.st[i + 1][1] : L.end; const w = Math.max(1, (nx - s[1]) / L.end * 100); h += `<span title="${tx(s[0])}" style="width:${w}%;background:${STC[i % STC.length]}"></span>`; });
+  $('strip').innerHTML = h + '<div class="now" id="now" style="left:0"></div>';
+}
+const stageName = L => { let n = null; for (const s of L.st) if (L.t >= s[1]) n = s[0]; return tx(n); };
+
+function addLog(e) {
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="a">${ageTxt(e.d)}</span><span>${tx(e.msg)}${e.tag ? `<span class="chip">${tg(e.tag)}</span>` : ''}</span>`;
+  $('log').prepend(li);
+  $('evt').innerHTML = `<b>${ageTxt(e.d)}</b>　${tx(e.msg)}`;
+}
+function fire(e) {
+  const L = A.L; L.fired.push(e);
+  if (e.fx.H === -100) { for (const k of 'HCBO') L.acc[k] -= 200; }
+  else for (const k in e.fx) L.acc[k] += e.fx[k];
+  addLog(e);
+  if (e.P != null) { A.pausedFor = e; showPause(e); }
+}
+function showPause(e) {
+  const L = A.L, p = e.P, nat = L.nature[p];
+  $('pTitle').textContent = ui('pt' + p);
+  $('pNature').textContent = nat ? ui('inNature') + tx(nat) : ui('inNatureGen').replace('{0}', tx(L.nat));
+  $('pSys').textContent = ui('here') + tx(L.sysLine);
+  $('pQ').textContent = ui('q' + ((p + (e.d | 0)) % 4));
+  $('pauseCard').classList.remove('hide');
+}
+function sampleHist() { const L = A.L, f = L.t / L.end, last = A.hist[A.hist.length - 1]; if (!last || f - last.f > .01) A.hist.push(Object.assign({ f }, statsNow(L))); }
+
+function tick(now) {
+  if (A.V !== 'life') return;
+  const L = A.L, dt = Math.min(.1, (now - A.last) / 1000); A.last = now;
+  if (!A.paused && !A.pausedFor && L.t < L.end) {
+    L.t = Math.min(L.end, L.t + dt * L.rate * A.speed);
+    while (L.i < L.ev.length && L.ev[L.i].d <= L.t + 1e-9) {
+      const e = L.ev[L.i++]; fire(e);
+      if (e.fin) { L.t = L.end; finish(); return; }
+      if (A.pausedFor) break;
+    }
+    sampleHist();
+  }
+  $('lAge').textContent = ageTxt(L.t);
+  $('now').style.left = (L.t / L.end * 100) + '%';
+  $('stageNow').textContent = stageName(L);
+  const pct = L.t / L.natDays * 100;
+  $('natFill').style.width = Math.max(.6, pct) + '%';
+  $('natPct').textContent = LANG === 'ja' ? `ここまで${spanTxt(L.t)}。自然な寿命の${pct < 10 ? pct.toFixed(1) : Math.round(pct)}％にあたります。` : `${spanTxt(L.t)} so far, ${pct < 10 ? pct.toFixed(1) : Math.round(pct)}% of a natural lifespan.`;
+  renderStats(); renderHM();
+  requestAnimationFrame(tick);
+}
+function renderHM() {
+  const L = A.L;
+  $('hm').innerHTML = A.H.map(h => {
+    const ht = Math.min(h.end, L.t * (h.rate / L.rate)), dead = ht >= h.end;
+    const st = dead ? (LANG === 'ja' ? (h.slaughtered ? '屠殺・' : '死亡・') : (h.slaughtered ? 'Slaughtered, ' : 'Died, ')) + ageTxt(h.end).replace(' old', '') : ageTxt(ht);
+    return `<div class="hm ${dead ? 'd' : ''}"><div>${tx(h.label)}</div><div class="s">${st}</div><div class="small muted" style="grid-column:1/3">${tx(h.sysName)}${dead && !h.slaughtered ? ' · ' + tx(h.cause) : ''}</div></div>`;
+  }).join('');
+}
+
+function finish() {
+  const L = A.L; sampleHist();
+  const t = store.get('fl.lives', []); t.push({ sp: L.sp, end: Math.round(L.end * 10) / 10, ts: Date.now() }); store.set('fl.lives', t.slice(-200));
+  A.pausedFor = null;
+  setTimeout(() => { endScreen(); setView('end'); }, 1500);
+}
+function endScreen() {
+  const L = A.L, pct = L.end / L.natDays * 100, ja = LANG === 'ja';
+  $('endPic').innerHTML = PIC[ICON_OF[L.sp]]; $('endPic').parentElement.style.setProperty('--ic', COLOR_OF[L.sp]);
+  $('eTitle').textContent = tx(L.label) + ' · ' + tx(L.sysName);
+  $('eHead').textContent = ja ? spanTxt(L.end) + 'の生涯でした。' : 'You lived ' + spanTxt(L.end) + '.';
+  $('eCause').textContent = (L.slaughtered ? '' : (ja ? '原因：' : 'Cause: ')) + tx(L.cause) + (ja ? '。' : '.');
+  const ps = pct < 10 ? pct.toFixed(1) : Math.round(pct);
+  $('eNat').innerHTML = ja ? `この動物の自然な寿命は<b>${tx(L.nat)}</b>ほど。あなたが生きたのは、そのうち<b>${ps}％</b>です。` : `A natural lifespan for this animal is about <b>${tx(L.nat)}</b>. You lived <b>${ps}%</b> of it.`;
+  $('eSpark').innerHTML = spark(); surv();
+  const share = Math.round((W_REAL[L.sp] / Object.values(W_REAL).reduce((a, b) => a + b, 0)) * 100);
+  $('eNotes').innerHTML = `<h2>${ja ? 'この生涯の背景' : 'What shaped this life'}</h2><p>${tx(L.sysLine)}</p><p class="small muted">${ja ? `飼育方式の種類と確率は、世界でどのくらい一般的かをもとにした大まかな推定です。どこまでが出典つきで、どこからが推定かは、ホーム画面のリンク先の一覧にまとめています。生涯のおよそ${share}％は、このように始まります。` : `The housing systems and their odds are rough estimates of how common each is worldwide. The source list (linked on the home page) shows what is sourced and what is not. About ${share}% of lives start like this one.`}</p>`;
+}
+function spark() {
+  const w = 600, h = 150, pad = 26, pts = A.hist;
+  if (pts.length < 2) return `<p class="muted small">${LANG === 'ja' ? 'この生涯は短すぎて、グラフにできませんでした。' : 'This life was too short to draw.'}</p>`;
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img">`;
+  for (const k in SLAB) {
+    const d = pts.map((p, i) => (i ? 'L' : 'M') + (pad + p.f * (w - 2 * pad)).toFixed(1) + ' ' + (h - pad - (clamp(p[k], 0, 100) / 100) * (h - 2 * pad)).toFixed(1)).join(' ');
+    s += `<path d="${d}" fill="none" stroke="var(${SLAB[k][1]})" stroke-width="3"/>`;
+  }
+  s += `<text x="${pad}" y="${h - 6}">${LANG === 'ja' ? '誕生' : 'Start'}</text><text x="${w - pad - 24}" y="${h - 6}">${LANG === 'ja' ? '最期' : 'End'}</text></svg>`;
+  return s + '<div>' + Object.keys(SLAB).map(k => `<span style="color:var(${SLAB[k][1]})">&#9632;</span> ${slab(k)}`).join(' &nbsp; ') + '</div>';
+}
+function surv() {
+  const L = A.L, N = 400, ends = [];
+  for (let i = 0; i < N; i++) { try { ends.push(newLife(L.sp, { sys: L.sys, sex: L.sex, mins: A.mins }).end); } catch (e) {} }
+  ends.sort((a, b) => a - b);
+  const max = Math.max(...ends, L.end) * 1.05, w = 600, h = 170, pad = 28;
+  let d = `M${pad} ${pad}`, alive = ends.length;
+  ends.forEach(e => { const x = pad + (e / max) * (w - 2 * pad); d += ` L${x.toFixed(1)} ${(pad + (1 - alive / ends.length) * (h - 2 * pad)).toFixed(1)} L${x.toFixed(1)} ${(pad + (1 - (alive - 1) / ends.length) * (h - 2 * pad)).toFixed(1)}`; alive--; });
+  const mx = pad + (L.end / max) * (w - 2 * pad), ja = LANG === 'ja';
+  $('eSurv').innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img"><path d="${d}" fill="none" stroke="var(--fg)" stroke-width="2.5"/><line x1="${mx}" x2="${mx}" y1="${pad}" y2="${h - pad}" stroke="var(--accent)" stroke-dasharray="4 3" stroke-width="2"/><text x="${pad}" y="${pad - 8}">${ja ? '生存率100％' : '100% alive'}</text><text x="${pad}" y="${h - 6}">${ja ? '誕生' : 'Birth'}</text><text x="${w - pad - 70}" y="${h - 6}">${spanTxt(max)}</text><text x="${Math.min(mx + 5, w - 60)}" y="${pad + 14}">${ja ? 'あなた' : 'you'}</text></svg>`;
+  const early = ends.filter(e => e < L.typ * .85).length, pc = Math.round(early / ends.length * 100);
+  $('eSurvTxt').textContent = ja ? `同じ飼育方式の100頭のうち${pc}頭は、ふつうの出荷時期より前に亡くなりました。残りは、ほぼ同じ日齢で屠殺されています。` : `${pc} of every 100 animals in this system died before the usual slaughter age. Everyone else is slaughtered at close to the same age.`;
+}
+function renderTally() {
+  const t = store.get('fl.lives', []);
+  if (!t.length) { $('tallyBody').textContent = ui('tallyNone'); return; }
+  const c = {}; t.forEach(x => { c[x.sp] = (c[x.sp] || 0) + 1; });
+  $('tallyBody').innerHTML = `<p>${LANG === 'ja' ? `これまで${t.length}回生まれました：` : `${t.length} so far: `}` + Object.entries(c).map(([k, v]) => `${tx(SP[k].label)} ×${v}`).join(LANG === 'ja' ? '、' : ', ') + `</p><button id="btnClear">${ui('tallyClear')}</button>`;
+  $('btnClear').onclick = () => { store.set('fl.lives', []); renderTally(); };
+}
+
+/* ---------- counters ---------- */
+setInterval(() => {
+  const s = (Date.now() - A.t0) / 1000, n = Math.floor(s * 87896729120 / 31557600);
+  $('cSlaughter').textContent = n.toLocaleString(LANG === 'ja' ? 'ja-JP' : 'en-US');
+  $('cChick').textContent = Math.floor(n * .78).toLocaleString(LANG === 'ja' ? 'ja-JP' : 'en-US');
+}, 200);
+
+/* ---------- sources ---------- */
+const SRC = [
+  [['Land animals slaughtered, 87.9 billion in 2024 (FAOSTAT via Faunalytics)', '2024年に屠殺された陸の動物は879億頭（FAOSTAT、Faunalytics経由）'], 'https://faunalytics.org/global-animal-slaughter-statistics-and-charts/'],
+  [['Farmed animals alive at any time; share factory-farmed (Our World in Data)', '同時に生きている家畜の数と工場式の割合（Our World in Data）'], 'https://ourworldindata.org/how-many-animals-are-factory-farmed'],
+  [['Broiler growth, leg disorders, mortality (FAO)', 'ブロイラーの成長・脚の障害・死亡率（FAO）'], 'https://www.fao.org/docrep/013/al723e/al723e00.pdf'],
+  [['Keel bone fractures in laying hens', '採卵鶏の竜骨骨折'], 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5835507/'],
+  [['Hen housing systems (Our World in Data)', '採卵鶏の飼育方式（Our World in Data）'], 'https://ourworldindata.org/do-better-cages-or-cage-free-environments-really-improve-the-lives-of-hens'],
+  [['Share of hens in cages worldwide (WATTAgNet)', '世界のケージ飼育の割合（WATTAgNet）'], 'https://wattagnet.com/articles/45072-how-laying-hens-are-kept-around-the-world'],
+  [['Turkeys: slaughter ages, mutilations, EFSA (transect-walk study)', '七面鳥：屠殺日齢・身体の切除・EFSA（現場調査）'], 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8614380/'],
+  [['Rabbits: EFSA opinion on different production systems', 'ウサギ：EFSAの意見（飼育方式の比較）'], 'https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2020.5944'],
+  [['Pig life cycle (UC Davis CLEAR)', 'ブタのライフサイクル（UC Davis CLEAR）'], 'https://clear.ucdavis.edu/explainers/what-lifecycle-pig-market-production'],
+  [['Sow housing and mortality', '母豚の飼育方式と死亡率'], 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9379333/'],
+  [['Sow replacement and parity at culling (Spain vs US)', '母豚の更新率と廃用時の産次（スペインと米国）'], 'https://www.3tres3.com/en/articles/comparison-of-swine-production-data-from-spain-and-usa_18169/'],
+  [['Stun failures in cattle and pigs (Animal Welfare field study)', '牛とブタの気絶の失敗（現場調査）'], 'https://www.cambridge.org/core/journals/animal-welfare/article/identifying-reasons-for-stun-failures-in-slaughterhouses-for-cattle-and-pigs-a-field-study/F64422B1C2E441E3C73980F1A6F6C18C'],
+  [['Dairy cow culling and longevity (FAWC)', '乳牛の淘汰と寿命（FAWC）'], 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/325044/FAWC_opinion_on_dairy_cow_welfare.pdf'],
+  [['Lameness in British dairy cattle (meta-analysis)', '英国の乳牛の跛行（メタ分析）'], 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7468474/'],
+  [['Pre-weaning dairy heifer mortality (USDA NAHMS)', '乳用子牛の離乳前死亡率（米国農務省NAHMS）'], 'https://www.aphis.usda.gov/animal_health/nahms/dairy/downloads/dairy17/morb-mort-us-prewean-dairy-heifer-nahms-2014.pdf'],
+  [['Liver abscesses in feedlot cattle', '肥育牛の肝臓膿瘍'], 'https://www.canr.msu.edu/news/industry-concerns-with-liver-abscesses-in-finishing-cattle'],
+  [['Bovine respiratory disease in feedlots (Oklahoma State)', '肥育場の牛呼吸器病（オクラホマ州立大）'], 'https://extension.okstate.edu:443/programs/beef-extension/beef-cattle-research-updates/site-files/docs/beef-cattle-research-update-september-2017-1.pdf'],
+  [['Lamb mortality (FOUR PAWS, advocacy source)', '子羊の死亡率（FOUR PAWS、動物保護団体の資料）'], 'https://www.four-paws.org.au/our-stories/press-releases/2024/lamb-mortality'],
+  [['Heat stress on live-export voyages', '生体輸出の船の熱ストレス'], 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7222853/'],
+  [['Ducks in foie gras production (Cambridge)', 'フォアグラ生産のアヒル（ケンブリッジ大）'], 'https://neuroscience.cam.ac.uk/publications/the-welfare-of-ducks-during-foie-gras-production'],
+  [['Pekin duck growth performance (Lohmann)', 'ペキンダックの成長（Lohmann）'], 'https://lohmann-breeders.com/ar/lohmanninfo/performance-of-current-peking-duck-breeds/']
+];
+function renderSources() {
+  $('srcList').innerHTML = '<table><tbody>' + SRC.map(s => `<tr><td><a href="${s[1]}" target="_blank" rel="noopener">${s[0][LANG === 'ja' ? 1 : 0]}</a></td></tr>`).join('') + '</tbody></table>';
+}
+
+/* ---------- wiring ---------- */
+seg('segLang', v => { LANG = v; store.set('fl.lang', v); applyLang(); });
+seg('segMode', v => { A.mode = v; $('modeHelp').textContent = ui(v === 'real' ? 'modeRealHelp' : 'modeEqualHelp'); });
+seg('segLen', v => { A.mins = +v; });
+seg('segSpeed', v => { A.speed = +v; });
+$('btnBorn').onclick = born; $('btnAgain').onclick = born;
+$('btnPause').onclick = () => { A.paused = !A.paused; $('btnPause').textContent = ui(A.paused ? 'play' : 'pause'); };
+$('btnNext').onclick = () => { const L = A.L; if (A.pausedFor) return; const e = L.ev[L.i]; if (e) L.t = Math.max(L.t, e.d - .001); };
+$('btnCont').onclick = () => {
+  const note = $('pNote').value.trim();
+  if (note) { const n = store.get('fl.notes', []); n.push({ sp: A.L.sp, age: ageTxt(A.L.t), note, ts: Date.now() }); store.set('fl.notes', n.slice(-100)); }
+  $('pNote').value = ''; A.pausedFor = null; $('pauseCard').classList.add('hide'); A.last = performance.now();
+};
+$('btnHome').onclick = () => { A.paused = true; $('btnResume').classList.remove('hide'); renderTally(); setView('home'); };
+$('btnHome2').onclick = () => { renderTally(); setView('home'); };
+$('btnResume').onclick = () => { setView('life'); A.paused = false; $('btnPause').textContent = ui('pause'); A.last = performance.now(); requestAnimationFrame(tick); };
+applyLang();
+</script>
+</body>
+</html>
