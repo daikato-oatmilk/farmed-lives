@@ -748,8 +748,8 @@ function sampleHist() { const L = A.L, f = L.t / L.end, last = A.hist[A.hist.len
 function tick(now) {
   if (A.V !== 'life') return;
   const L = A.L, dt = Math.min(.1, (now - A.last) / 1000); A.last = now;
-  if (!A.paused && !A.pausedFor && L.t < L.end) {
-    L.t = Math.min(L.end, L.t + dt * L.rate * A.speed);
+  if (!A.paused && !A.pausedFor) {
+    if (L.t < L.end) L.t = Math.min(L.end, L.t + dt * L.rate * A.speed);
     while (L.i < L.ev.length && L.ev[L.i].d <= L.t + 1e-9) {
       const e = L.ev[L.i++]; fire(e);
       if (e.fin) { L.t = L.end; finish(); return; }
